@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FILM — Find your first roll. Give it a story.</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a1712'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23b04a2a' stroke-width='2.4'/><circle cx='16' cy='16' r='2.4' fill='%23b04a2a'/><g fill='%23f2ede0'><circle cx='16' cy='5' r='1.7'/><circle cx='16' cy='27' r='1.7'/><circle cx='5' cy='16' r='1.7'/><circle cx='27' cy='16' r='1.7'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1ebdd;
+  --paper-2:#e5dbc2;
+  --paper-3:#faf6ea;
+  --ink:#1a1712;
+  --ink-2:#3d362c;
+  --ink-soft:#7a6f5e;
+  --line:rgba(26,23,18,.13);
+  --line-2:rgba(26,23,18,.27);
+  --rust:#b04a2a;
+  --rust-2:#93402c;
+  --rust-soft:rgba(176,74,42,.10);
+  --amber:#c98a3a;
+  --gold:#dfa85b;
+  --moss:#556b4a;
+  --film:#12100c;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --sans:"Inter","Helvetica Neue",-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#cfc4b2}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+ display:flex;align-items:center;justify-content:center}
+body::after{content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;color:inherit}
+::selection{background:var(--rust);color:var(--paper)}
+
+/* ============ Device (phone frame, on except on a real full-screen phone) ============ */
+.device{position:relative;width:min(342px,92vw);height:min(740px,84dvh);display:flex;overflow:visible;
+ padding:0;border:10px solid #050505;border-radius:50px;
+ background:#050505;
+ box-shadow:0 44px 105px rgba(24,18,11,.5);
+ --dh:min(740px,84dvh)}
+@media(max-width:430px){
+ html,body{background:var(--paper)!important;height:100%}
+ body{align-items:stretch;justify-content:stretch;overflow:hidden}
+ .device{position:fixed;inset:0;width:100%;height:100%;padding:0;border:none;border-radius:0;box-shadow:none;--dh:100dvh}
+ .side-btn{display:none!important}
+ .dynamic-island{display:none!important}
+ .bottom-nav{bottom:calc(10px + env(safe-area-inset-bottom));left:10px;right:10px}
+ .app-body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+}
+.app-shell{flex:1;min-width:0;position:relative;display:flex;flex-direction:column;overflow:hidden;background:var(--paper);border-radius:40px}
+@media(max-width:430px){.app-shell{border-radius:0}}
+.app-body{flex:1;min-height:0;position:relative;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+
+/* side buttons */
+.side-btn{display:block;position:absolute;z-index:1;border-radius:3px;
+  background:linear-gradient(90deg,#2c2c2e,#1a1a1c);width:4px;box-shadow:0 0 2px rgba(0,0,0,.6)}
+.sb-a{left:-3px;top:150px;height:30px}
+.sb-b{left:-3px;top:192px;height:56px}
+.sb-c{left:-3px;top:258px;height:56px}
+.sb-p{right:-3px;top:206px;height:90px}
+/* dynamic island */
+.dynamic-island{display:block;position:absolute;top:10px;left:50%;transform:translateX(-50%);
+ width:110px;height:31px;border-radius:18px;background:#050505;z-index:115;pointer-events:none;
+ box-shadow:0 0 0 1px rgba(255,255,255,.04)}
+.dynamic-island::after{content:"";position:absolute;right:11px;top:50%;transform:translateY(-50%);
+ width:10px;height:10px;border-radius:50%;background:#15131c;box-shadow:inset 0 0 0 1.2px #2b2933}
+
+/* ============ App header ============ */
+.app-header{position:relative;z-index:90;height:54px;display:flex;align-items:center;flex-shrink:0;
+  justify-content:space-between;padding:4px 24px 0 28px;background:var(--paper);
+  border-bottom:1px solid var(--line);transition:background .2s;
+  padding-top:calc(4px + env(safe-area-inset-top))}
+.app-header .h-icon{background:var(--paper-2);border-color:var(--line);color:var(--ink-2)}
+.app-header .wordmark{color:var(--ink)}
+.app-header .h-avatar{border-color:var(--line)}
+.wordmark{background:none;border:none;cursor:pointer;font-family:var(--serif);font-weight:600;
+  font-size:25px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.wordmark::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rust);
+  box-shadow:0 0 0 4px rgba(176,74,42,.15)}
+.h-right{display:flex;align-items:center;gap:10px}
+.h-icon{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);background:transparent;
+  display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+.h-icon svg{width:18px;height:18px}
+.h-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:1px solid var(--line-2);
+  background:var(--paper-2);cursor:pointer;padding:0}
+.h-avatar img{width:100%;height:100%;object-fit:cover}
+
+/* ============ Screens ============ */
+.screen{padding-bottom:120px;animation:fade .4s ease}
+#screen-stories,#screen-tools,#screen-me{padding-top:0}
+#screen-home{padding-top:0}
+.ov-screen{position:absolute;inset:0;z-index:120;background:var(--paper);
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  animation:ovIn .34s ease}
+@keyframes ovIn{from{transform:translateY(12px)}to{transform:none}}
+@keyframes fade{from{transform:translateY(7px)}to{transform:none}}
+
+/* ============ Bottom nav ============ */
+.bottom-nav{position:absolute;z-index:70;bottom:12px;left:11px;right:11px;height:66px;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  padding:8px 8px;gap:2px;border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;background:rgba(22,19,15,.95);
+  box-shadow:0 18px 42px rgba(28,20,14,.3);backdrop-filter:blur(20px)}
+.bn{background:none;border:none;border-radius:16px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;color:#b0a89c;font-size:8.5px;cursor:pointer;
+  letter-spacing:.12em;text-transform:uppercase;transition:.2s}
+.bn svg{width:21px;height:21px}
+.bn.active{color:var(--paper-3);background:rgba(255,255,255,.1)}
+.bn-slot{position:relative}
+.bn-create{position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+  width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(145deg,#c0552f,#9c4029);color:#fff;font-size:30px;line-height:1;
+  display:grid;place-items:center;box-shadow:0 10px 24px rgba(176,74,42,.45),0 0 0 6px rgba(22,19,15,.95);
+  transition:transform .2s}
+.bn-create:active{transform:translateX(-50%) scale(.94)}
+
+/* ============ Generic components ============ */
+.section{padding:26px 20px 6px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.sec-head h3{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:-.01em}
+.sec-head .see{font-family:var(--mono);font-size:10px;color:var(--ink-soft);cursor:pointer}
+.eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--rust)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;
+  border:none;cursor:pointer;background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:0 22px;
+  border-radius:14px;transition:.2s}
+.btn:active{transform:scale(.98)}
+.btn.big{min-height:52px;flex:1}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.rust{background:linear-gradient(145deg,#c0552f,#a1442c)}
+.btn.light{background:var(--paper-3);color:var(--ink)}
+.btn.quiet{background:transparent;color:var(--ink-2);border:1px solid var(--line-2)}
+.link{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-family:var(--mono);
+  font-size:10px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px}
+.btn:disabled{opacity:.4}
+.btn-block{width:100%}
+
+/* back button on overlay */
+.ov-back{display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin:0 0 18px}
+
+/* ============ Home cover ============ */
+.cover{position:relative;min-height:calc(var(--dh)*0.5);display:flex;align-items:flex-end;padding:30px 22px 30px;overflow:hidden}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) sepia(.08)}
+.cover-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,12,8,.34),rgba(15,12,8,0) 22%,rgba(15,12,8,.55) 50%,rgba(15,12,8,0) 80%)}
+.cover-fade{position:absolute;left:0;right:0;bottom:0;height:260px;
+ background:linear-gradient(to bottom,rgba(13,10,7,0) 0%,rgba(60,54,44,.4) 55%,var(--paper) 100%);z-index:1;pointer-events:none}
+.cover-copy{position:relative;z-index:2;color:var(--paper-3)}
+.cover-kicker{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.cover h1{font-family:var(--serif);font-weight:500;font-size:42px;line-height:.95;letter-spacing:-.02em;margin-bottom:14px}
+.cover h1 em{color:var(--gold);font-style:italic}
+.cover p{font-size:14px;line-height:1.65;color:rgba(250,246,234,.86);max-width:340px}
+.cover-actions{display:flex;gap:11px;margin-top:24px}
+.cover-actions .btn{flex:1;white-space:nowrap;padding:0 8px}
+.cover-actions .btn.big{min-height:50px;font-size:10px}
+.cover-cap{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(250,246,234,.5);margin-top:20px;text-align:center}
+.btn.dark{background:var(--ink);color:var(--paper-3);border:1px solid rgba(255,255,255,.14)}
+.btn.light{background:var(--paper-3);color:var(--ink);border:1px solid rgba(255,255,255,.4)}
+
+/* ============ Home promo banner ============ */
+.promo{position:relative;margin:18px 20px 4px;border-radius:22px;overflow:hidden;min-height:150px;display:flex;align-items:flex-end}
+.promo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) sepia(.1)}
+.promo-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,12,8,.88),rgba(15,12,8,.15) 60%,rgba(15,12,8,.1))}
+.promo-body{position:relative;z-index:2;padding:16px 18px}
+.promo-tag{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.promo h4{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.05;color:var(--paper-3);margin-bottom:5px}
+.promo p{font-size:12px;line-height:1.5;color:rgba(250,246,234,.8);margin-bottom:11px;max-width:280px}
+.promo .btn{font-size:9px;padding:9px 16px}
+.promo-x{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;
+  background:rgba(20,16,11,.4);border:1px solid rgba(255,255,255,.25);color:#fff;
+  display:grid;place-items:center;cursor:pointer;z-index:3;font-size:13px;line-height:1}
+
+/* recommended rows */
+.recrow{display:flex;gap:14px;align-items:center;background:var(--paper-3);border:1px solid var(--line);
+  border-radius:18px;padding:12px 14px;margin:0 20px 12px;cursor:pointer;transition:.15s}
+.recrow:active{transform:scale(.99)}
+.recrow .rc-thumb{flex:0 0 66px;width:66px;height:66px;border-radius:12px;overflow:hidden;background:var(--paper-2)}
+.recrow .rc-thumb img{width:100%;height:100%;object-fit:cover}
+.recrow .rc-body{flex:1;min-width:0}
+.recrow .rc-meta{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+.recrow h5{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.12}
+.recrow .rc-sub{font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.4}
+
+/* personalize pill */
+.pill{display:flex;align-items:center;gap:12px;margin:4px 20px 0;padding:15px 16px;border-radius:18px;
+  border:1px solid var(--line-2);background:var(--paper-3);cursor:pointer}
+.pill .pill-ic{width:34px;height:34px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-size:18px}
+.pill span{flex:1;font-size:15px;color:var(--ink)}
+.pill .chev{color:var(--ink-soft);font-size:18px}
+
+/* explore chips */
+.chips{display:flex;gap:10px;padding:0 20px}
+.chip{flex:1;border:1px solid var(--line-2);background:var(--paper-3);border-radius:16px;
+  padding:16px 6px 14px;text-align:center;cursor:pointer}
+.chip .chip-ic{width:22px;height:22px;margin:0 auto 7px;color:var(--rust)}
+.chip small{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ink-2)}
+
+.hair{height:1px;background:var(--line);margin:26px 20px}
+.hcard .hc-badge{position:absolute;left:8px;bottom:8px;max-width:calc(100% - 16px);
+  background:rgba(20,16,11,.62);color:#fff;border-radius:999px;padding:4px 9px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hc-img{position:relative}
+
+/* ============ Home feature blocks ============ */
+.feature{display:flex;gap:16px;align-items:center;background:var(--paper-3);border:1px solid var(--line);
+  border-radius:20px;padding:14px;margin:0 20px 14px;cursor:pointer;text-align:left;transition:.2s}
+.feature:active{transform:scale(.99)}
+.feature .f-img{flex:0 0 88px;width:88px;height:88px;border-radius:14px;overflow:hidden;background:var(--paper-2)}
+.feature .f-img img{width:100%;height:100%;object-fit:cover}
+.feature .f-body{flex:1;min-width:0}
+.feature .f-tag{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust)}
+.feature h4{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.05;margin:5px 0 6px}
+.feature p{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.feature .f-chev{flex:none;color:var(--ink-soft);width:20px;height:20px}
+.home-gap{padding:0 20px;margin-bottom:16px}
+
+/* horizontal popular carousel */
+.hscroll{display:flex;gap:14px;overflow-x:auto;padding:2px 20px 10px;scroll-snap-type:x mandatory}
+.hscroll::-webkit-scrollbar{display:none}
+.hcard{flex:0 0 170px;scroll-snap-align:start;cursor:pointer}
+.hcard .hc-img{height:180px;border-radius:18px;overflow:hidden;margin-bottom:9px}
+.hcard .hc-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.82) sepia(.1)}
+.hcard h5{font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.15}
+.hcard small{font-family:var(--mono);font-size:8px;color:var(--ink-soft);letter-spacing:.08em}
+
+/* membership banner */
+.mem-banner{margin:0 20px 14px;border-radius:20px;padding:22px;color:#fbeee0;position:relative;overflow:hidden;
+  background:linear-gradient(140deg,#2a221b,#4a3326 60%,#7a4328)}
+.mem-banner .mb-tag{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.mem-banner h4{font-family:var(--serif);font-size:25px;font-weight:500;margin:8px 0 6px}
+.mem-banner p{font-size:12px;line-height:1.5;color:rgba(251,238,224,.82)}
+.mem-banner .btn{margin-top:14px}
+
+/* ============ Stories feed ============ */
+.filters{display:flex;gap:8px;overflow-x:auto;padding:16px 20px 10px}
+.filters::-webkit-scrollbar{display:none}
+.fchip{flex:none;border:1px solid var(--line-2);background:var(--paper-3);border-radius:999px;padding:8px 14px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.fchip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* masonry */
+.masonry{columns:2;column-gap:10px;padding:6px 14px 10px}
+.mcard{break-inside:avoid;margin-bottom:10px;border-radius:16px;overflow:hidden;background:var(--paper-3);
+  border:1px solid var(--line);cursor:pointer}
+.mcard img{width:100%;display:block}
+.mcard .mc-body{padding:10px 11px}
+.mcard h5{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.15;margin-bottom:5px}
+.mcard .mc-meta{font-family:var(--mono);font-size:7.5px;color:var(--ink-soft);letter-spacing:.05em;line-height:1.5}
+.mcard .mc-eg{display:flex;gap:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.mcard .mc-eg button{display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;
+  font-size:10px;color:var(--ink-soft)}
+.mcard .mc-eg svg{width:14px;height:14px}
+.mcard .mc-eg .on{color:var(--rust)}
+.mcard .mc-eg .on svg{fill:var(--rust)}
+
+/* ============ Roll detail ============ */
+.roll-head{padding:22px 20px 0}
+.roll-head h2{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.12;margin:8px 0 14px}
+.roll-author{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.roll-author img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.roll-author .ra-name{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.1}
+.roll-author .ra-sub{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+.roll-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.roll-meta .rm{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+ color:var(--ink-2);background:var(--paper-2);padding:6px 11px;border-radius:999px}
+.roll-meta .rm b{color:var(--ink)}
+.roll-layers{display:flex;gap:18px;margin:20px 20px;padding:12px;border-top:1px solid var(--line-2);
+  border-bottom:1px solid var(--line-2);flex-wrap:wrap}
+.roll-layers span{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:8px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
+.roll-layers i{width:8px;height:8px;border-radius:50%}
+.roll-layers .thought i{background:var(--amber)}
+.roll-layers .stayed i{background:var(--moss)}
+.frm{margin:0 20px 26px}
+.frm .fr-num{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:8px}
+.frm .fr-num small{opacity:.7}
+.note-line{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.5;color:var(--amber);margin-bottom:9px}
+.note-line b{font-style:normal;color:var(--rust);font-weight:600}
+.frm img{width:100%;border-radius:14px}
+.frm figcaption{font-family:var(--serif);font-size:17px;color:var(--ink-2);margin-top:9px;line-height:1.5}
+.ruin-frame{aspect-ratio:3/2;border-radius:14px;background:#17120b;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;color:rgba(241,235,221,.55)}
+.ruin-frame svg{width:32px;height:32px}
+.ruin-frame span{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase}
+.ruin-frame::after{content:"";position:absolute;top:0;right:0;width:55%;height:100%;
+  background:radial-gradient(120% 100% at 100% 0,rgba(201,138,58,.5),transparent 70%)}
+
+/* ============ Film strip (pulled out of cassette) ============ */
+.filmstrip-zone{margin:20px -20px 6px}
+.fs-zone-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 20px 10px}
+.fs-zone-head .t{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-2)}
+.fs-zone-head .h{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+.filmstrip{display:flex;align-items:stretch;gap:0;padding:2px 8px 12px 0;overflow:hidden}
+/* cartridge fixed in its own column, never overlaps the film */
+.darkbox{flex:0 0 78px;display:flex;align-items:center;justify-content:center}
+/* only the film strip scrolls, snap shows one full frame at a time */
+.ffilm-scroll{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;
+ scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.ffilm-scroll::-webkit-scrollbar{height:5px}
+.ffilm-scroll::-webkit-scrollbar-track{background:transparent}
+.ffilm-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+/* real 35mm dark cartridge (暗盒) */
+.db{position:relative;width:74px;height:269px;display:flex;flex-direction:column;align-items:center}
+.db-hub{position:relative;z-index:4;width:32px;height:18px;border-radius:8px 8px 3px 3px;
+ background:linear-gradient(180deg,#3b3b42,#0c0c0e);
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 1px 2px rgba(0,0,0,.5)}
+.db-hub::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);
+ width:12px;height:5px;border-radius:2px;background:#050507}
+.db-ring{position:relative;z-index:3;width:66px;height:10px;margin-top:-3px;border-radius:50%;
+ background:radial-gradient(ellipse at 50% 30%,#34353a,#0e0e10);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.db-ring::before{content:"";position:absolute;left:50%;top:1px;transform:translateX(-50%);
+ width:62px;height:5px;border-radius:50%;
+ background:repeating-linear-gradient(90deg,#050507 0 2px,#3f4046 2px 4px)}
+.db-body{position:relative;width:68px;flex:1;margin-top:-4px;border-radius:30px 30px 9px 9px / 20px 20px 7px 7px;
+ background:linear-gradient(90deg,#0c0c0e 0%,#222328 17%,#2c2d34 50%,#1b1c20 83%,#09090b 100%);
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 14px 26px rgba(20,14,8,.3);overflow:hidden}
+.db-band{position:absolute;left:0;right:0;top:34px;height:22px;display:flex;align-items:center;
+ justify-content:center;font-size:8px;font-weight:800;letter-spacing:.08em;opacity:.95}
+.db-dx{position:absolute;left:6px;right:6px;bottom:20px;height:30px;border-radius:2px;
+ background:linear-gradient(180deg,#b8b3a4,#8e897c);opacity:.5}
+.db-dx::before{content:"";position:absolute;inset:5px 10px;
+ background:repeating-linear-gradient(90deg,#1a1a1a 0 3px,transparent 3px 7px)}
+.db-slit{position:absolute;right:-1px;top:30px;width:6px;height:150px;z-index:5;
+ background:linear-gradient(180deg,#7c5e32,#56401f);border-radius:2px;
+ box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+.db-base{position:relative;z-index:2;width:64px;height:9px;margin-top:-3px;border-radius:50%;
+ background:radial-gradient(ellipse at 50% 60%,#2a2a2e,#08080a)}
+/* pulled film */
+.ffilm{flex:0 0 auto;align-self:center;display:flex;flex-direction:column;background:#0a0a0c}
+.ff-sprocket{height:15px;width:100%;position:relative;overflow:hidden}
+.ff-sprocket::before{content:"";position:absolute;left:0;top:0;bottom:0;width:300%;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='15'%3E%3Crect x='4' y='3' width='8' height='9' rx='2' fill='%23e7e1d3'/%3E%3C/svg%3E");
+ background-repeat:repeat-x;background-position:center}
+.ff-track{display:flex}
+.ff-cell{flex:0 0 215px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;scroll-snap-align:start}
+.ff-cellnum{font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;color:#8d877a;text-transform:uppercase}
+.ff-frame{position:relative;border-radius:2px;overflow:hidden;background:#000;
+ border:2px solid #000;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+.ff-frame img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.ff-frame.ruined{aspect-ratio:3/2;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:7px;background:#16120b;color:rgba(231,225,211,.45)}
+.ff-frame.ruined svg{width:24px;height:24px}
+.ff-frame.ruined span{font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase}
+.ff-note{font-family:var(--serif);font-style:italic;font-size:12px;line-height:1.35;color:#ece5d6}
+.ff-note b{color:var(--gold);font-style:normal;font-weight:600}
+.ff-cap{font-family:var(--serif);font-size:10.5px;line-height:1.35;color:#a8a294}
+.fs-hint{text-align:center;font-family:var(--mono);font-size:7.5px;letter-spacing:.2em;
+ text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+
+.engage{display:flex;gap:10px;justify-content:center;padding:16px 0;border-top:1px solid var(--line-2);margin:8px 20px 0}
+.eg{display:flex;align-items:center;gap:7px;background:none;border:1px solid var(--line-2);border-radius:14px;
+  padding:11px 16px;cursor:pointer;color:var(--ink-soft);font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase}
+.eg svg{width:17px;height:17px}
+.eg.on{color:var(--rust);border-color:var(--rust)}
+.eg.on svg{fill:var(--rust)}
+/* comments reveal */
+.comments{margin:16px 20px 0;border-top:1px solid var(--line);padding-top:18px}
+.cm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
+  font-family:var(--serif);font-size:22px;font-weight:500}
+.cm-count{font-family:var(--mono);font-size:9px;color:var(--paper);background:var(--ink-soft);
+  padding:3px 9px;border-radius:20px}
+.cm-list{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
+.cm{display:flex;gap:11px}
+.cm-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;overflow:hidden}
+.cm-av img{width:100%;height:100%;object-fit:cover}
+.cm-b{font-size:13px;line-height:1.55;color:var(--ink-2)}
+.cm-b b{color:var(--ink);margin-right:6px;font-weight:600}
+.cm-none{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:15px}
+.cm-add{display:flex;gap:9px;align-items:center}
+.cm-add input{flex:1;border:1px solid var(--line-2);border-radius:12px;background:var(--paper-3);
+  padding:12px;font-family:var(--sans);font-size:13px;min-width:0}
+.cm-add input:focus{outline:none;border-color:var(--rust)}
+.roll-end{text-align:center;padding:36px 0 10px}
+.roll-end .e{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft)}
+.roll-end .re{display:flex;gap:9px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+
+/* ============ Tools hub ============ */
+.tool{margin:0 20px 16px;border:1px solid var(--line);border-radius:20px;background:var(--paper-3);
+  padding:20px;cursor:pointer;text-align:left}
+.tool .t-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.tool .t-ic{width:46px;height:46px;border-radius:13px;background:var(--ink);color:var(--paper-3);
+  display:grid;place-items:center}
+.tool .t-ic svg{width:23px;height:23px}
+.tool h4{font-family:var(--serif);font-size:24px;font-weight:600}
+.tool small{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--rust)}
+.tool-sub{display:flex;gap:9px;margin-top:6px;flex-wrap:wrap}
+.tool-sub button{flex:1;min-width:120px;border:1px solid var(--line-2);border-radius:12px;background:var(--paper);
+  padding:12px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);cursor:pointer}
+.tool-tabs{display:flex;gap:6px;margin:18px 20px 6px;background:var(--paper-2);padding:5px;border-radius:14px}
+.tool-tabs button{flex:1;border:none;background:transparent;padding:11px 4px;border-radius:10px;cursor:pointer;
+ font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.tool-tabs button.on{background:var(--ink);color:var(--paper)}
+.t-intro{font-family:var(--serif);font-size:17px;line-height:1.5;color:var(--ink-2);margin-top:12px}
+.tool-hero{position:relative;border-radius:16px;overflow:hidden;margin:12px 0 14px;height:122px;display:flex;align-items:flex-end;cursor:pointer}
+.tool-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tool-hero .th-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,12,8,.85),rgba(15,12,8,.1) 65%)}
+.tool-hero .th-body{position:relative;z-index:2;padding:12px 14px;color:var(--paper-3)}
+.tool-hero .th-tag{font-family:var(--mono);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.tool-hero .th-body h4{font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.1;margin-bottom:2px}
+.tool-hero .th-body p{font-size:11px;color:rgba(250,246,234,.85)}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:2px}
+.cat-card{position:relative;border-radius:13px;overflow:hidden;height:88px;cursor:pointer}
+.cat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cat-card .cc-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,12,8,.82),rgba(15,12,8,.05) 70%)}
+.cat-card .cc-body{position:absolute;left:9px;right:9px;bottom:8px;color:#fff;z-index:2}
+.cat-card .cc-body b{font-family:var(--serif);font-size:13px;font-weight:600;display:block;line-height:1.1}
+.cat-card .cc-body small{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+
+/* ============ Quiz ============ */
+.choose{display:flex;flex-direction:column;gap:14px;padding:20px}
+.qcard{border:1px solid var(--line);border-radius:20px;background:var(--paper-3);padding:22px;cursor:pointer;text-align:left}
+.qcard .qc-tag{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust)}
+.qcard h3{font-family:var(--serif);font-size:27px;font-weight:600;margin:8px 0 7px}
+.qcard p{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.qcard .qc-go{margin-top:14px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink)}
+.qshell{padding:20px}
+.qmeta-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ink-soft)}
+.progress{height:3px;border-radius:99px;background:var(--line);margin:12px 0 34px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--rust)}
+.qtitle{font-family:var(--serif);font-size:31px;font-weight:500;line-height:1.1;margin-bottom:26px}
+.opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;border:1px solid var(--line);
+  border-radius:15px;background:var(--paper-3);padding:15px 17px;margin-bottom:10px;cursor:pointer;font-size:14px;transition:.18s}
+.opt .ic{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;
+  font-family:var(--mono);font-size:9px;color:var(--ink-soft)}
+.opt .ot{flex:1}
+.opt.sel{border-color:var(--rust);background:var(--rust-soft)}
+.opt .chev{color:var(--ink-soft);width:17px;height:17px}
+.qnavrow{display:flex;justify-content:space-between;margin-top:8px}
+
+/* starter result */
+.starter{padding:20px}
+.starter-tag{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}
+.starter-title{font-family:var(--serif);font-size:40px;font-weight:500;margin:10px 0 12px}
+.schips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.schip{border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;font-family:var(--mono);
+  font-size:9px;color:var(--ink-2)}
+.scard{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--paper-3)}
+.scard-img{position:relative}
+.scard-img .scanlab{position:absolute;z-index:2;left:12px;top:12px;font-family:var(--mono);font-size:8px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:rgba(20,16,12,.7);padding:6px 10px;border-radius:999px}
+.scard-img img{width:100%}
+.scard-h{padding:18px}
+.scard-h .why{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink);margin-bottom:14px}
+.sg{margin-bottom:13px}
+.sg .lbl{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+.sg .val{font-family:var(--serif);font-size:19px;color:var(--ink-2);line-height:1.4}
+.sg .val b{color:var(--rust)}
+.stars{display:inline-block;letter-spacing:2px}
+.stars .e{color:var(--line-2)}
+.tips-ol{margin-top:6px;padding-left:20px}
+.tips-ol li{font-family:var(--serif);font-size:18px;color:var(--ink-2);line-height:1.5;margin-bottom:6px}
+.scard-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.cine-note{margin-top:14px;border-left:3px solid var(--rust);padding:12px 16px;background:var(--rust-soft);
+  font-family:var(--serif);font-size:16px;line-height:1.5;color:var(--ink-2);border-radius:0 12px 12px 0}
+
+/* ============ Develop ============ */
+.segmented{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:rgba(28,23,17,.07);border-radius:14px;
+  padding:4px;margin:0 20px 20px}
+.segmented button{border:none;background:transparent;border-radius:11px;min-height:42px;cursor:pointer;
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.segmented button.active{background:var(--ink);color:var(--paper-3)}
+.order-card{border:1px solid var(--line);border-radius:20px;background:var(--paper-3);margin:0 20px 14px;overflow:hidden;cursor:pointer}
+.order-card .oc-top{display:flex;align-items:center;gap:12px;padding:16px 18px}
+.order-card .oc-letter{width:38px;height:38px;border-radius:50%;border:1px solid var(--rust);color:var(--rust);
+  display:grid;place-items:center;font-family:var(--mono);font-size:10px}
+.order-card h4{font-family:var(--serif);font-size:22px;font-weight:600;flex:1}
+.order-card .oc-rate{font-size:11px;color:var(--ink-soft)}
+.order-card .oc-prices{display:flex;gap:10px;padding:0 18px 16px}
+.price-pill{flex:1;border:1px solid var(--line-2);border-radius:12px;padding:11px;text-align:center;background:var(--paper)}
+.price-pill .pl-l{font-family:var(--mono);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.price-pill .pl-v{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink-2)}
+.price-pill.member{border-color:var(--rust);background:linear-gradient(145deg,#f6e7df,#f3dcd0)}
+.price-pill.member .pl-l{color:var(--rust)}
+.price-pill.member .pl-v{color:var(--rust)}
+.price-pill .pl-note{font-size:9px;color:var(--ink-soft);margin-top:2px}
+.oc-desc{padding:0 18px 16px;font-size:12px;color:var(--ink-soft);line-height:1.55}
+.oc-actions{display:flex;gap:9px;padding:0 18px 18px}
+/* map */
+.map-card{height:260px;margin:0 20px 14px;border-radius:18px;overflow:hidden;position:relative;
+  background:#e6e1cd;box-shadow:var(--shadow-card)}
+.map-card .river{position:absolute;left:-20%;right:-20%;top:40%;height:30px;background:#a9c4d4;
+ transform:rotate(-5deg);border-top:1px solid rgba(255,255,255,.5);border-bottom:1px solid rgba(0,0,0,.05)}
+.map-card .park{position:absolute;left:6%;top:8%;width:30%;height:24%;background:#bcd0a8;border-radius:6px}
+.map-card .park::after{content:"Riverside Park";position:absolute;left:8px;top:8px;font-family:var(--mono);font-size:7px;color:#5a7a4a;letter-spacing:.05em}
+.map-card .bld{position:absolute;background:#d8d2bd;border-radius:2px}
+.map-card .st{position:absolute;background:#fff}
+.map-card .st.h{left:0;right:0;height:5px}
+.map-card .st.v{top:0;bottom:0;width:5px}
+.map-card .st.h.thick{height:9px;background:#f6f1d8}
+.map-card .st.v.thick{width:9px;background:#f6f1d8}
+.map-card .road-label{position:absolute;font-family:var(--mono);font-size:7px;color:#8a8272;letter-spacing:.05em}
+.map-card .poi{position:absolute;font-family:var(--mono);font-size:7px;color:#7a7262;letter-spacing:.03em}
+.pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+  background:var(--rust);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:10px;
+  box-shadow:0 3px 8px rgba(0,0,0,.3);cursor:pointer;transition:transform .15s;z-index:5}
+.pin.on{transform:rotate(-45deg) scale(1.18)}
+.pin span{transform:rotate(45deg)}
+.p1{left:22%;top:26%}.p2{right:16%;top:58%}.p3{left:52%;bottom:18%}
+.you{position:absolute;left:42%;top:46%;width:14px;height:14px;background:#2f6df6;border:3px solid #fff;
+ border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3);z-index:4}
+.map-popup{position:absolute;left:10px;right:10px;bottom:10px;background:#fff;border-radius:12px;padding:11px 13px;
+ box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:8;display:none}
+.map-popup.on{display:block}
+.map-popup .mp-row{display:flex;justify-content:space-between;align-items:center}
+.map-popup b{font-family:var(--serif);font-size:15px;font-weight:600}
+.map-popup .mp-x{font-family:var(--mono);font-size:10px;color:var(--ink-soft);cursor:pointer}
+.map-popup small{font-family:var(--mono);font-size:8.5px;color:var(--ink-soft);letter-spacing:.05em}
+.map-popup .mp-cta{display:inline-block;margin-top:7px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+ text-transform:uppercase;color:#fff;background:var(--ink);padding:6px 11px;border-radius:99px}
+/* lab detail */
+.ld-head{padding:0 20px}
+.ld-head h2{font-family:var(--serif);font-size:34px;font-weight:500;margin:8px 0 10px}
+.ld-score{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.ld-score .f{color:var(--gold)}
+.ld-score .e{color:var(--line-2)}
+.ld-score b{color:var(--ink);font-size:17px}
+.ld-meta{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-2);line-height:1.7;margin:12px 0}
+.ld-actions{display:flex;gap:10px;padding:0 20px;margin:18px 0 8px}
+.ld-reviews{padding:24px 20px 0}
+.ld-reviews h3{font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:16px}
+.ld-reviews h3 span{color:var(--ink-soft)}
+.ld-review{display:flex;gap:12px;padding:16px 0;border-top:1px solid var(--line-2)}
+.ld-review .rv-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.ld-review .rv-top b{font-family:var(--serif);font-size:18px;font-weight:600}
+.ld-review .rv-top .f{color:var(--gold)}
+.ld-review .rv-top .e{color:var(--line-2)}
+.ld-review p{font-family:var(--serif);font-size:16px;line-height:1.55;color:var(--ink-2)}
+.ld-photos{margin:18px 20px 0;border:1px dashed var(--line-2);border-radius:14px;padding:22px;text-align:center;
+  font-family:var(--serif);font-style:italic;color:var(--ink-soft)}
+
+/* glossary accordion */
+.glossary{padding:0 20px}
+details.gloss{border-top:1px solid var(--line-2)}
+details.gloss:last-child{border-bottom:1px solid var(--line-2)}
+details.gloss summary{list-style:none;display:flex;justify-content:space-between;align-items:center;
+  padding:16px 2px;cursor:pointer;font-family:var(--serif);font-size:20px;font-weight:600}
+details.gloss summary::-webkit-details-marker{display:none}
+details.gloss p{font-size:13px;line-height:1.6;color:var(--ink-soft);padding:0 0 16px}
+
+/* ============ Film library & detail ============ */
+.film-list{padding:0 20px}
+.film-row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper-3);
+  border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:11px;cursor:pointer}
+.film-row .fr-thumb{flex:0 0 64px;width:64px;height:64px;border-radius:11px;overflow:hidden;background:var(--paper-2)}
+.film-row .fr-thumb img{width:100%;height:100%;object-fit:contain}
+.film-row .fr-body{flex:1;min-width:0}
+.film-row h4{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.1}
+.film-row .fr-meta{font-family:var(--mono);font-size:8px;color:var(--ink-soft);letter-spacing:.08em;margin-top:4px}
+.film-row .fr-chev{color:var(--ink-soft);width:18px;height:18px}
+.family-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust)}
+.film-detail{padding:0 20px}
+.film-detail .fd-hero{border-radius:18px;overflow:hidden;background:var(--paper-2);margin-bottom:10px}
+.film-detail .fd-hero img{width:100%;height:230px;object-fit:contain;padding:14px}
+.fd-gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.fd-gal{border-radius:12px;overflow:hidden;background:var(--paper-2);position:relative}
+.fd-gal img{width:100%;height:96px;object-fit:cover;display:block}
+.fd-gal span{position:absolute;left:5px;bottom:5px;font-family:var(--mono);font-size:7px;letter-spacing:.1em;
+ text-transform:uppercase;background:rgba(15,12,8,.72);color:#fff;padding:3px 6px;border-radius:6px}
+.film-detail h2{font-family:var(--serif);font-size:36px;font-weight:500;line-height:1.05}
+.fd-chips{display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:16px 0;margin:18px 0}
+.fd-chip{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.fd-chip b{display:block;font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink);margin-top:3px;text-transform:none}
+.fd-sec{margin-bottom:22px}
+.fd-sec .fd-l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px}
+.fd-sec p{font-family:var(--serif);font-size:21px;line-height:1.6;color:var(--ink-2)}
+/* settings table */
+.setting-table{border:1px solid var(--line-2);border-radius:14px;overflow:hidden}
+.st-head,.st-row{display:grid;grid-template-columns:1.6fr 1fr 1.3fr}
+.st-head{background:var(--paper-2);font-family:var(--mono);font-size:8px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.st-head span,.st-row span{padding:12px 14px}
+.st-row{border-top:1px solid var(--line-2);font-family:var(--mono);font-size:11px;color:var(--ink)}
+.st-row span:first-child{font-family:var(--serif);font-size:16px;color:var(--ink-2)}
+.expo-line{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--moss);margin-top:12px;line-height:1.5}
+.scenario-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.scenario{border:1px solid var(--line);border-radius:15px;background:var(--paper-3);padding:16px 17px}
+.scenario .sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.scenario h4{font-family:var(--serif);font-size:21px;font-weight:600}
+.scenario .fit{font-family:var(--mono);font-size:7px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:99px}
+.scenario .fit.great{color:var(--moss);border:1px solid var(--moss)}
+.scenario .fit.careful{color:var(--amber);border:1px solid var(--amber)}
+.scenario .fit.wasted{color:var(--ink-soft);border:1px solid var(--line-2)}
+.scenario p{font-size:13px;line-height:1.6;margin-bottom:6px}
+.scenario p.how{color:var(--ink-soft);margin-bottom:0}
+.avoid-list{list-style:none;border-top:1px solid var(--line-2)}
+.avoid-list li{position:relative;padding:13px 0 13px 26px;border-bottom:1px solid var(--line-2);
+  font-family:var(--serif);font-size:18px;line-height:1.5;color:var(--ink-2)}
+.avoid-list li::before{content:"—";position:absolute;left:0;color:var(--rust)}
+.fd-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fd-story{background:none;border:none;text-align:left;cursor:pointer}
+.fd-story img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:13px}
+.fd-story figcaption{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-2);margin-top:6px;line-height:1.4}
+
+/* ============ Profile ============ */
+.p-top{padding:26px 20px 20px;display:flex;gap:18px;align-items:center}
+.p-avatar{flex:0 0 82px;width:82px;height:82px;border-radius:50%;overflow:hidden;border:2px solid var(--paper-3);
+  box-shadow:0 10px 22px rgba(40,28,16,.18)}
+.p-avatar img{width:100%;height:100%;object-fit:cover}
+.p-id h2{font-family:var(--serif);font-size:32px;font-weight:600}
+.p-id .p-handle{font-family:var(--mono);font-size:10px;color:var(--ink-soft);margin:5px 0 12px}
+.p-stats{display:flex;gap:20px}
+.p-stats span{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.p-stats b{display:block;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink)}
+.p-actions{display:flex;gap:9px;padding:0 20px}
+.p-actions .btn{flex:1}
+/* timeline */
+.timeline{margin:8px 20px 0;padding-left:12px;position:relative}
+.timeline::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;background:var(--line-2)}
+.tl-item{position:relative;padding:0 0 22px 22px}
+.tl-item::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--rust);z-index:2}
+.tl-date{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+.tl-card{background:var(--paper-3);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer}
+.tl-card img{width:100%;height:150px;object-fit:cover}
+.tl-card .tl-body{padding:12px 14px}
+.tl-card h5{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.15}
+.tl-card .tl-meta{font-family:var(--mono);font-size:8px;color:var(--ink-soft);margin-top:5px;letter-spacing:.08em}
+
+/* rotating semicircular timeline */
+.rotor-card{margin:6px 20px 0;background:var(--paper-3);border:1px solid var(--line);border-radius:22px;padding:14px 10px 16px}
+.rotor{display:block;width:100%;margin:0 auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.rotor:active{cursor:grabbing}
+.rotor .arctrack{fill:none;stroke:#7a6a52;stroke-width:2}
+.rotor .tick{stroke:#7a6a52;stroke-width:1.3;stroke-linecap:round}
+.rotor .tickdot{fill:var(--rust)}
+.rotor .mlab{font-family:var(--mono);font-size:10px;fill:var(--ink-soft);text-anchor:middle}
+.rotor .needle{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.rotor .hub{fill:var(--paper-3);stroke:var(--ink-soft);stroke-width:1.3}
+.rotor .hubdot{fill:var(--rust)}
+.rotor .needledot{fill:var(--rust);stroke:var(--paper-3);stroke-width:1.2}
+.rotor-readout{text-align:center;margin-top:2px}
+.rotor-readout .rr-month{font-family:var(--serif);font-size:27px;font-weight:600;line-height:1}
+.rotor-readout .rr-sub{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
+.rotor-empty{margin:14px 20px 0;padding:26px 18px;text-align:center;border:1px dashed var(--line-2);border-radius:16px;
+  color:var(--ink-soft);font-size:13px;line-height:1.6}
+.rotor-list{margin:14px 20px 0;display:flex;flex-direction:column;gap:12px}
+.rotor-list .tl-card{margin:0}
+.rotor-list > *{animation:rotorIn .32s cubic-bezier(.22,.8,.32,1) both}
+@keyframes rotorIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.rr-month{transition:opacity .15s}
+.rr-month.swap{opacity:0}
+/* settings list */
+.p-list{margin:0 20px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper-3)}
+.p-list button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:none;
+  border-bottom:1px solid var(--line);padding:15px 16px;cursor:pointer;font-size:14px;color:var(--ink-2)}
+.p-list button:last-child{border-bottom:none}
+.p-list .pli-ic{width:20px;height:20px;color:var(--rust)}
+.p-list button span:last-child{margin-left:auto;color:var(--ink-soft)}
+.p-form{padding:20px}
+.p-form .field{margin-bottom:16px}
+.p-form label{display:block;font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:7px}
+.p-form input,.p-form textarea{width:100%;border:1px solid var(--line-2);border-radius:12px;background:var(--paper-3);
+  padding:13px;font-family:var(--sans);font-size:14px}
+.p-form textarea{min-height:78px;resize:vertical}
+.toggle-row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line);
+  font-size:14px;color:var(--ink-2);cursor:pointer}
+.toggle-row:last-child{border-bottom:none}
+
+/* ============ Create ============ */
+.create{padding:20px}
+.create .c-field{margin-bottom:18px}
+.create label{display:block;font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:8px}
+.create input,.create select,.create textarea{width:100%;border:1px solid var(--line-2);border-radius:12px;
+  background:var(--paper-3);padding:13px;font-family:var(--sans);font-size:14px}
+.create textarea{resize:vertical;min-height:80px}
+.create .c-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.c-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.c-frame{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden}
+.c-frame img{width:100%;height:100%;object-fit:cover}
+.c-frame button{position:absolute;top:5px;right:5px;width:23px;height:23px;border-radius:50%;border:none;
+  background:rgba(20,16,12,.7);color:#fff;cursor:pointer;font-size:13px;line-height:1}
+.c-addframe{aspect-ratio:1;border:1px dashed var(--line-2);border-radius:12px;background:transparent;
+  display:grid;place-items:center;color:var(--ink-soft);cursor:pointer}
+.c-addframe svg{width:26px;height:26px}
+.c-actions{display:flex;gap:9px;margin-top:6px}
+
+/* ============ Modal ============ */
+.modal{position:absolute;inset:0;z-index:200;background:rgba(15,12,8,.6);backdrop-filter:blur(5px);
+  display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal.open{display:flex}
+.modal-card{width:100%;max-width:480px;background:var(--paper);border-radius:26px 26px 0 0;
+  padding:26px 24px 30px;animation:slideup .32s ease;max-height:90vh;overflow-y:auto}
+@media(min-width:700px){.modal{align-items:center}
+ .modal-card{border-radius:26px;max-width:420px}}
+@keyframes slideup{from{transform:translateY(40px)}to{transform:none}}
+.modal-x{position:absolute;top:16px;right:18px;background:var(--line);border:none;width:32px;height:32px;
+  border-radius:50%;cursor:pointer;font-size:18px}
+.m-plans{display:flex;flex-direction:column;gap:11px;margin:20px 0}
+.m-plan{display:flex;align-items:center;gap:13px;border:1px solid var(--line-2);border-radius:15px;padding:15px;cursor:pointer;background:var(--paper-3)}
+.m-plan.sel{border-color:var(--rust);background:var(--rust-soft)}
+.m-plan .mp-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--line-2);flex:none}
+.m-plan.sel .mp-radio{border-color:var(--rust);background:radial-gradient(circle,var(--rust) 45%,transparent 50%)}
+.m-plan .mp-name{font-family:var(--serif);font-size:20px;font-weight:600}
+.m-plan .mp-sub{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.m-plan .mp-price{margin-left:auto;text-align:right}
+.m-plan .mp-price b{font-family:var(--serif);font-size:23px;font-weight:600}
+.m-plan .mp-price small{font-size:10px;color:var(--ink-soft)}
+.m-perks{list-style:none;margin:6px 0 18px}
+.m-perks li{font-family:var(--serif);font-size:17px;color:var(--ink-2);padding:5px 0 5px 24px;position:relative}
+.m-perks li::before{content:"✓";position:absolute;left:0;color:var(--moss)}
+
+/* notification dot on bell */
+.h-dot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--rust);border:1.5px solid var(--paper)}
+.h-icon{position:relative}
+
+/* bottom sheet (share + notifications) */
+.sheet-mask{position:absolute;inset:0;background:rgba(15,12,8,.42);z-index:220;opacity:0;pointer-events:none;transition:.25s}
+.sheet-mask.open{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper-3);border-radius:22px 22px 0 0;z-index:221;
+ padding:14px 20px 28px;transform:translateY(105%);transition:.3s cubic-bezier(.2,.8,.2,1);max-height:78%;overflow-y:auto}
+.sheet.open{transform:translateY(0)}
+.sheet-grab{width:38px;height:4px;border-radius:3px;background:var(--line-2);margin:0 auto 14px}
+.sheet h3{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 14px}
+.share-opt{display:flex;align-items:center;gap:13px;padding:11px 4px;cursor:pointer;border-bottom:1px solid var(--line)}
+.share-opt:last-child{border-bottom:none}
+.share-opt .so-ic{width:40px;height:40px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.share-opt .so-ic img{width:100%;height:100%;object-fit:cover}
+.share-opt .so-t{flex:1;min-width:0}
+.share-opt .so-t b{font-family:var(--serif);font-weight:600;font-size:17px;display:block}
+.share-opt .so-t small{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.notif{display:flex;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line);align-items:flex-start}
+.notif:last-child{border-bottom:none}
+.notif .n-av{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.notif .n-av img{width:100%;height:100%;object-fit:cover}
+.notif .n-body{flex:1;min-width:0;font-family:var(--serif);font-size:15.5px;line-height:1.45;color:var(--ink-2)}
+.notif .n-body b{color:var(--ink);font-weight:600}
+.notif .n-time{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ink-soft);margin-top:3px;display:block}
+.notif .n-thumb{width:44px;height:44px;border-radius:9px;object-fit:cover;flex-shrink:0}
+
+/* toast */
+.toast{position:absolute;left:50%;bottom:108px;transform:translateX(-50%) translateY(16px);background:var(--ink);
+  color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  padding:12px 18px;border-radius:999px;z-index:300;opacity:0;pointer-events:none;transition:.28s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="device">
+  <span class="side-btn sb-a"></span>
+  <span class="side-btn sb-b"></span>
+  <span class="side-btn sb-c"></span>
+  <span class="side-btn sb-p"></span>
+ <div class="app-shell">
+  <span class="dynamic-island"></span>
+  <header class="app-header">
+    <button class="wordmark" onclick="go('home')">FILM</button>
+    <div class="h-right">
+      <button class="h-icon" onclick="openNotifs()" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="h-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Tabs (scroll inside app-body) ===== -->
+  <div class="app-body" id="app-body">
+    <main class="screen" id="screen-home"></main>
+    <main class="screen" id="screen-stories" hidden></main>
+    <main class="screen" id="screen-tools" hidden></main>
+    <main class="screen" id="screen-me" hidden></main>
+  </div>
+
+  <!-- ===== Full-screen sub-flow overlay ===== -->
+  <div class="ov-screen" id="ov" hidden></div>
+
+  <!-- ===== Bottom sheet modal (membership) ===== -->
+  <div class="modal" id="modal" onclick="if(event.target===this)closeModal()"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="sheet-mask" id="sheet-mask" onclick="closeSheet()"></div>
+  <div class="sheet" id="sheet"><div class="sheet-grab"></div><div id="sheet-body"></div></div>
+
+  <!-- ===== Bottom nav ===== -->
+  <nav class="bottom-nav">
+    <button class="bn active" data-bn="home" onclick="go('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></svg>
+      Home</button>
+    <button class="bn" data-bn="stories" onclick="go('stories')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h5a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4zM20 4h-5a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h5z"/></svg>
+      Stories</button>
+    <div class="bn-slot">
+      <button class="bn-create" onclick="openCreate()" aria-label="Create">+</button>
+    </div>
+    <button class="bn" data-bn="tools" onclick="go('tools')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="m14.5 9.5-5 5M14.5 14.5l-5-5"/></svg>
+      Tools</button>
+    <button class="bn" data-bn="me" onclick="go('me')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.5 3.1-5.5 7-5.5s7 2 7 5.5"/></svg>
+      Me</button>
+  </nav>
+ </div>
+</div>
+
+<script>
+/* ============ Image map ============ */
+const FILM_KEYS=["gold200","colorplus","ultramax","proimage","portra160","portra400","portra800","fujic100","fujic200","fujic400","c5203","c5207","c5213","c5219","c5294","trix","hp5","tmax","delta"];
+const SHORT={gold200:"Gold 200",colorplus:"ColorPlus 200",ultramax:"UltraMax 400",proimage:"ProImage 100",portra160:"Portra 160",portra400:"Portra 400",portra800:"Portra 800",fujic100:"C100",fujic200:"C200",fujic400:"C400",c5203:"5203 50D",c5207:"5207 250D",c5213:"5213 200T",c5219:"5219 500T",c5294:"5294 500T",trix:"Tri-X 400",hp5:"HP5 400",tmax:"T-Max 100",delta:"Delta 100"};
+const famTag={warm:"Color · warm",cool:"Color · cool",cine:"Cine film",bw:"Black & white"};
+const IMG_URL={"avatar_1.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BYlDb2Ptpooc1AxTS8QckDienSd", "avatar_2.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZCuGbGnl8okpj5xHNUVcYEDrnDh", "avatar_3.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Hh6FbZ5B3olOIGxGM1VcoCktnic", "avatar_4.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FrNib2O9toh2nPxJfAIcQ2MxnWe", "avatar_5.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JL0VbbXCJoTTbpxsVCpcwqRLnyS", "avatar_6.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GcNNbI5h0oSWkAx0DUycjDm2nVh", "avatar_7.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/G9u4b6zjBoija8x9anuctj1FnSg", "avatar_8.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XZR4bvTEhoYWfbxLo9tcl1g7nVc", "c5203_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Rz3cboyEHoJG92xa1U5cCWf6nLf", "c5203_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SKEvbL3d4oQuzYxjRifcK7dinpd", "c5203_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XCB8bs10Voc4SBxZ6slcsP1WnAe", "c5203_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZYZQb9xdQo34PLx5OyxcyxjQnQf", "c5203_reel.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HtRdbkPDdo6eT4xU48kc2lVznoh", "c5207_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EZP1b4xGfoWHhGx6x3NcO3f6nwh", "c5207_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TX8NbOP3go6MUcxjV9ic2XVVnQf", "c5207_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ge19bsX1OoGGGZxCsIqcJ2gonad", "c5207_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I6xfbLWvXoC5NhxUJMlc47Wxnsh", "c5207_reel.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SBZ7bb38Co3gdQx8nu2cet6rnEg", "c5213_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UXagbMSHYotsjKxmI6rcM0Fbn2f", "c5213_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HPHhbyKIMoKfazxz97wcj3ilneg", "c5213_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GxFhbFOL8obDfWxTz8UcpqJinRW", "c5213_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LVyyb6y4lo31P7xsWXYcCM3MnNb", "c5213_reel.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/M27ebnh5coGYJ0xaHbIcx1rznSf", "c5219_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SEWObpsmGoGXO8xoEoych4WCn0f", "c5219_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XVacbwEdKoRhfRxTcOWcDeb4nzb", "c5219_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WqZebhyqmoYPBUxt5sqciGmGnlj", "c5219_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RsitbjE3mo85Q2xRwd9c4ngPnjg", "c5219_reel.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YrXvbNqqcoEPTMxgtDjcqcNhnvb", "c5294_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KX8DbStN8oFKkAxGoigcsww8nSf", "c5294_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P2sdb8qG9orh5CxQPC7cAAW1nZf", "c5294_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T19TbEdQ0oCQKWxaHr7cIQzNn5d", "c5294_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Gtrkbg22coqlTsxL0mGctWEzn8c", "colorplus_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EBYUby13YoVWOSxDiRxclJbQniv", "colorplus_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/K28Hbsi0yopNcWxDh4GcEdGwnwd", "colorplus_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BFB1bIFCAo4IUBxxuSBcH3JIned", "colorplus_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NeVjbWzJUoOKlRxdysSc23h6nue", "cover_hero.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RNYnbA0fjonHPSxhlIHcHd9Zn4b", "delta_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BFuUbvCwYo9QMKxtFlsc9oMEndg", "delta_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQwdbREvKoR2DSxO1utcBqopnBh", "delta_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IvvsbLg3xou8rgxhtOKcTiuOnBL", "delta_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IHG7bkwrhok1Mfxf68ycxpYNnad", "fujic100_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VJMJbLgJUoKHzkxuVSHcWF2JnWh", "fujic100_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ChmxbM1ipoC1rPx9RdDcvVEPnBf", "fujic100_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CAt5bBDF5oT36XxdooycYMV4nNq", "fujic100_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BuWibXOmZooGrXxwUzhcHSwbnHf", "fujic200_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PLTSbqeVgomUo9xtZZ6cwP8gntA", "fujic200_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KPL1beLQhoxCbFxzHOUcph3tnqb", "fujic200_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JOj2bWf3GokyTAx0Kydcl6o3nZf", "fujic200_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YTmcbIsPkoblwhxFdfCcJ1bKncb", "fujic400_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YBzVbsNukoMm3jxkTPdcVMRkngd", "fujic400_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V1fmbZ9lJorqH5xMgklccTBMnyh", "fujic400_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AjuNbTXBEo4vHbxb12fcW3Qan4E", "fujic400_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/B47mbgBVSo5N9oxIeNKcBTIXngg", "gold200_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MCe6bh82foUrImxP9sqcJEPQn4d", "gold200_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/J7NLbIdCjoR6RcxkQdVcdP55njC", "gold200_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/C00xbfcu7oOKCDxosVHcDqtdnPY", "gold200_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/E6JBbkUkgoyzl9x2R97cHnyJn8e", "hp5_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A0S2boCe1oKUV1xyduZcKopfnLd", "hp5_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OnIKbecwmopkjgxrGTvctTZ5nVf", "hp5_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GmF0bL1fUo8UsxxfvB5cjFopnYf", "hp5_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OVWZbDHfkok3exxxfYbcODDnnYf", "portra160_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EraVbqvdboZkjLxnERIcWVqanmc", "portra160_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IovAbH1XXoGbXPx64BLcLNtRn3g", "portra160_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EoQab9ox6oN0bGxdBvac4jy4nBh", "portra160_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MkW7b4OkQoTZ5yxpeMgcrz2jntg", "portra400_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LVFiblaU7onJ5ZxCIdAcRnu5n4g", "portra400_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/H1fubfhDwoBpsOxmEfgc1kdfnGd", "portra400_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CLDgbZB60ovmozxPyu7cDPoInlb", "portra400_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V2UBbzGu4oq7l7xqtxtcm9NWn2e", "portra800_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EDZpbOZfnop8NCxpeuacs0ctnEf", "portra800_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SxcBby9hUo5Vh1xuhfgc5LX0nne", "portra800_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FcHTbN17goc10rxsWlQcUmGpnLg", "portra800_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R8SMbO8THotbgZxucE5cGIOKnch", "proimage_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ot12b6JYiopm4ixCMPKcrpTfnhf", "proimage_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UlOLbnbnPoeKnMxoSZ5cEBkfnAR", "proimage_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UTnNb1useoaM18x1xDhcD7zUnlf", "proimage_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Nywnb2MHwoZipMx8PDzcHN4xnch", "s1_01_moving.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VRoQbathIoZfqGxFLOIcUz2ynWh", "s1_07_bus.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Yd9ObmbZBow3fdxOYrScpLORnVc", "s1_14_dinner.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FyQNblKR1oC86LxgJ7TcG94HnyW", "s1_21_rain.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RIqebwHnAoTmghxcphccV9F1n9e", "s1_36_mom.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HXRNbs1SzoUW6cxg5bCcAIqbnZg", "s2_03_veggies.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QGMebhHa0o7OXuxU6V3cMlUqnGg", "s2_11_garden.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QskGb9jRtoyRdnxxbtKcMC3Mnjf", "s2_19_table.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TVATbLYnfoxwNbx1TKScmRCInIe", "s2_30_nap.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JT1ZbmiM9oQki7xNEm3cOSNOnEc", "s3_02_dorm.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/U4Zrb17xtobPzmxTBkOc5mZPnmh", "s3_09_friends.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AZTebLvIuo3l1qxcZozci9tRnZb", "s3_22_river.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZZ6tbPOaooeur6xeVAscHsPqnDc", "s3_33_study.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/E3ssbsgeZojm6vxhTVzcI2Bdnbd", "s4_04_subway.jpg": "https://aka.doubaocdn.com/s/USYusejrVt", "s4_11_vendor.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KwFPbxn5qo9l0hxtANFcRTD1n3c", "s4_18_alley.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PjPLbwBszoXClKxKrLickbm1nrh", "tmax_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AIbNbhARgoMxSVxoJnHc7rtrnWh", "tmax_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I90jbpXp6ojfjPxwOWAcZu0qnEd", "tmax_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PNCqbKmmzorvezx4qkRc0YUjnNc", "tmax_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SItVb79SoofASuxhi9OclkVpnrd", "trix_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KhXxb4DO8osfA5x2WGRcSrgcnJC", "trix_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ULuNbYAKDoFEFsxrJsUcR32SnCg", "trix_noritsu.jpg": "https://aka.doubaocdn.com/s/ZgT0Wpm0Ca", "trix_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P6RibUQnFoBxSFxrj3tcucOBnsh", "ultramax_fuji.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/X5JrbojFYok4a1xcJjQcfxDknZf", "ultramax_hasselblad.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AWNVbgDWPo89USxNJgNcgBE9nIg", "ultramax_noritsu.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O9y6bYuUhovgRxxl0ppc64osnwg", "ultramax_pkg.jpg": "https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GGT9bWLRxoGBjKxYCooc2HPnnze"};
+const IMG={};
+FILM_KEYS.forEach(k=>{IMG[k]={pkg:IMG_URL[`${k}_pkg.jpg`],noritsu:IMG_URL[`${k}_noritsu.jpg`],fuji:IMG_URL[`${k}_fuji.jpg`],hasselblad:IMG_URL[`${k}_hasselblad.jpg`]};});
+["c5203","c5207","c5213","c5219"].forEach(k=>IMG[k].reel=IMG_URL[`${k}_reel.jpg`]);
+const av=a=>IMG_URL[`avatar_${a}.jpg`];
+const cover=s=>s.frames[0].img;
+
+/* ============ Films ============ */
+const FILMS={
+gold200:{fam:"warm",name:"Kodak Gold 200",iso:200,isoLabel:"200 · Daylight",grain:"Fine-medium",tone:"Warm gold, nostalgic",best:"sunny days, travel, streets, friends",usd:9,diff:2,chips:["Warm","Everyday","Beginner friendly"],
+ tag:"The color of an afternoon you can't quite date.",
+ desc:"Gold 200 coats ordinary afternoons in honey-gold light, with just enough grain to make a picture feel like memory. Cheap, forgiving and always available — the classic first roll."},
+colorplus:{fam:"warm",name:"Kodak ColorPlus 200",iso:200,isoLabel:"200 · Daylight",grain:"Medium",tone:"Warm, slightly faded",best:"everyday streets, friends, casual travel",usd:7,diff:2,chips:["Warm","Cheap & cheerful","Beginner friendly"],
+ tag:"The cheapest ticket to a real roll.",
+ desc:"ColorPlus is the most affordable color film made. Warm, a little faded and relaxed about imperfection — street corners, dinners and everyday life come out as easy, honest snapshots."},
+ultramax:{fam:"warm",name:"Kodak UltraMax 400",iso:400,isoLabel:"400 · All-weather",grain:"Fine-medium",tone:"Warm, balanced",best:"overcast days, indoors, parties, travel",usd:10,diff:2,chips:["Warm","All-weather","Beginner friendly"],
+ tag:"One roll that refuses to complain.",
+ desc:"UltraMax keeps the sensitivity of a 400 film with grain close to a 200. Overcast skies, indoor rooms and dusk all come out steady and warm — the safe 'one roll for everything' choice."},
+proimage:{fam:"warm",name:"Kodak ProImage 100",iso:100,isoLabel:"100 · Bright light",grain:"Fine",tone:"Warm, flattering skin",best:"sunny portraits, family, warm climates",usd:9,diff:3,chips:["Warm","Portraits","Sunny days"],
+ tag:"Skin tones that stay calm in the heat.",
+ desc:"ProImage was built for warm, humid climates and for people: skin stays clear, grain is fine, and the film stays stable even after months in a drawer. A relaxed portrait film at half the price of Portra."},
+portra160:{fam:"warm",name:"Kodak Portra 160",iso:160,isoLabel:"160 · Bright light",grain:"Almost invisible",tone:"Soft, neutral-warm",best:"studio portraits, fashion, still life",usd:13,diff:3,chips:["Warm","Portraits","Fine detail"],
+ tag:"Clean, quiet and flawless.",
+ desc:"Portra 160 is the finest-grained, most neutral member of the Portra family — skin looks natural and tones stay smooth, like careful retouching without a trace. Made for unhurried work in good light."},
+portra400:{fam:"warm",name:"Kodak Portra 400",iso:400,isoLabel:"400 · Very forgiving",grain:"Fine, soft",tone:"Warm, low contrast",best:"portraits, everyday life, backlight",usd:17,diff:2,chips:["Warm","Portraits","Very forgiving"],
+ tag:"The color film that forgives the most.",
+ desc:"Portra 400 is famous for forgiving exposure: overexpose or underexpose and the frame still comes back. Creamy skin, gentle highlights and low contrast leave plenty of room — the all-around king of color negative."},
+portra800:{fam:"warm",name:"Kodak Portra 800",iso:800,isoLabel:"800 · Low light",grain:"Medium, soft",tone:"Warm, gentle",best:"indoor rooms, evenings, candlelit portraits",usd:20,diff:3,chips:["Warm","Low light","Portraits"],
+ tag:"For the warm light after the sun goes.",
+ desc:"Portra 800 keeps skin calm in dim rooms and candlelight, with a soft grain that feels like warmth rather than noise. A tender film for nights, dinners and the light a 400 film misses."},
+fujic100:{fam:"cool",name:"Fujifilm C100",iso:100,isoLabel:"100 · Bright light",grain:"Very fine",tone:"Cool, pale, airy",best:"bright landscapes, quiet portraits, still life",usd:11,diff:3,chips:["Cool","Airy","Bright days"],
+ tag:"Morning light, held at a distance.",
+ desc:"C100 is a low-speed, low-saturation film with almost no grain and a cool, breathing quiet. Bright days come through pale and clean — the look of Japanese 'fresh' photography."},
+fujic200:{fam:"cool",name:"Fujifilm C200",iso:200,isoLabel:"200 · Daylight",grain:"Fine",tone:"Cool, blue-green air",best:"everyday life, landscapes, travel",usd:9,diff:2,chips:["Cool","Airy","Beginner friendly"],
+ tag:"The air after a cool morning.",
+ desc:"C200 is the friendliest way into Fuji color: blues and greens stay clean, skies open up, and everyday scenes feel fresh and a little detached. A cheap, easy roll that loves the outdoors."},
+fujic400:{fam:"cool",name:"Fujifilm C400",iso:400,isoLabel:"400 · All-weather",grain:"Medium",tone:"Cool, stronger contrast",best:"landscapes, streets, overcast days",usd:11,diff:2,chips:["Cool","All-weather","Beginner friendly"],
+ tag:"Cool color with a little more weight.",
+ desc:"C400 brings Fuji's blue-green look to a 400 film: contrast and saturation run a little stronger, and overcast skies, streets and rainy days hold up. The cool-toned step up from C200."},
+c5203:{fam:"cine",name:"Kodak Vision3 50D · 5203",iso:50,isoLabel:"50 · Bright light",grain:"Nearly invisible",tone:"Natural, cinematic",best:"bright landscapes, fashion, slow work",usd:10,diff:3,chips:["Cinematic","Ultra-fine","Bright days"],
+ tag:"Hollywood daylight, in a still camera.",
+ desc:"5203 is the daylight, low-speed film of movie sets, with grain so fine it disappears and a wide cinematic range. It needs bright light and patience; the reward is color like a graded film."},
+c5207:{fam:"cine",name:"Kodak Vision3 250D · 5207",iso:250,isoLabel:"250 · Daylight",grain:"Fine",tone:"Clear, cinematic",best:"daytime documentary, travel, story mood",usd:9,diff:3,chips:["Cinematic","Versatile","Story mood"],
+ tag:"The daytime film behind countless movies.",
+ desc:"250D is the default film for daylight movie scenes, with smooth highlights and rich shadows. It gives everyday travel a story-film air — the most versatile cine roll for daytime."},
+c5213:{fam:"cine",name:"Kodak Vision3 200T · 5213",iso:200,isoLabel:"200T · Indoor",grain:"Fine",tone:"Tungsten-balanced, mixed warm and cool",best:"interiors, dusk, mixed light",usd:10,diff:4,chips:["Cinematic","Indoor","Mixed light"],
+ tag:"The difficult light inside a room.",
+ desc:"200T is balanced for tungsten light, so warm indoor lamps come out clear rather than orange, and dusk scenes keep their layers. In daylight it runs cool blue — a quiet specialist for atmosphere."},
+c5219:{fam:"cine",name:"Kodak Vision3 500T · 5219",iso:500,isoLabel:"500T · Night",grain:"Medium, cinematic",tone:"Tungsten, cool-blue shadows",best:"night scenes, neon, city solitude",usd:10,diff:4,chips:["Cinematic","Night","Neon glow"],
+ tag:"The film behind the night in movies.",
+ desc:"500T is the high-speed cine film for night: neon blooms, wet pavement glows, and the city's loneliness looks like a still from a film. The roll behind the signature halation look of night photography."},
+c5294:{fam:"cine",name:"Kodak Vision2 500T · 5294",iso:500,isoLabel:"500T · Night",grain:"Coarse, retro",tone:"Tungsten, old-school dark",best:"night scenes, retro mood, dark storytelling",usd:16,diff:5,chips:["Cinematic","Retro","Night"],
+ tag:"A last-generation night film, out of print.",
+ desc:"5294 is a reversal (positive) film from the previous generation — heavier grain, darker tones and a frame that's final the moment it's shot. A time capsule of older night cinema, rare and unforgiving."},
+trix:{fam:"bw",name:"Kodak Tri-X 400",iso:400,isoLabel:"400 · Pushable",grain:"Bold, strong",tone:"High contrast, deep black",best:"documentary, streets, grainy realism",usd:11,diff:3,chips:["B&W","Street","Bold grain"],
+ tag:"The legend of the street.",
+ desc:"Tri-X is the black-and-white film of news and street photography: bold grain, strong contrast and a frame with weight. It can be pushed far in the dark and keeps working — a 70-year-old standard."},
+hp5:{fam:"bw",name:"Ilford HP5 Plus 400",iso:400,isoLabel:"400 · Forgiving",grain:"Medium, soft",tone:"Rich grays, medium contrast",best:"human portraits, travel documentary",usd:10,diff:3,chips:["B&W","Forgiving","Documentary"],
+ tag:"A long gray scale, kindly exposed.",
+ desc:"HP5 Plus is the English counterpart to Tri-X — softer, gentler and generous with midtones, with a very wide exposure range. It reads like an essay: restrained, patient and human."},
+tmax:{fam:"bw",name:"Kodak T-Max 100",iso:100,isoLabel:"100 · Bright light",grain:"Very fine, modern",tone:"Mid-high contrast, clear",best:"landscapes, architecture, still life",usd:11,diff:4,chips:["B&W","Sharp","Fine detail"],
+ tag:"Black and white, razor clear.",
+ desc:"T-Max 100 uses flat T-grain particles for near-digital sharpness in black and white: edges, textures and glass reflections stay clean at large sizes. A rational film for careful work in good light."},
+delta:{fam:"bw",name:"Ilford Delta 100",iso:100,isoLabel:"100 · Bright light",grain:"Very fine, smooth",tone:"Neutral, elegant",best:"portraits, still life, refined B&W",usd:12,diff:3,chips:["B&W","Elegant","Refined"],
+ tag:"The quiet English gray.",
+ desc:"Delta 100 uses a core-shell crystal structure for smooth, neutral tones and fine grain. It keeps the clarity of modern film with a restrained elegance — a refined choice for portraits and still life."}
+};
+
+/* ============ Scans, cameras, labs ============ */
+const SCANS={
+noritsu:{name:"Noritsu",label:"Warm scan",desc:"A warm scan that favors reds and yellows — skin looks clear and bright, like a gentle sun filter. The natural match for warm films."},
+fuji:{name:"Fuji Frontier",label:"Cool scan",desc:"A cooler scan with strong blues and greens and a little more contrast — fresh, airy and clean. The match for cool-toned films."},
+hasselblad:{name:"Hasselblad Flextight",label:"True scan",desc:"The neutral, true-to-life scan — closest to what the eye saw, with fine detail and no added color. For accuracy and prints."}
+};
+const CAMERAS={
+point:{tag:"Point & shoot",name:"A 35mm point-and-shoot",examples:"Contax T2 / Olympus mju-II",
+ desc:"Pocket-sized, auto-focus and auto-exposure — it handles the settings so you can keep your attention on the moment. The go-to for parties and travel."},
+point120:{tag:"Medium-format compact",name:"A 120 point-and-shoot",examples:"Fujifilm GA645 / Plaubel Makina",
+ desc:"The ease of a compact, but with a 6×4.5 negative that blows up to wall size. Auto metering, startling detail."},
+slr:{tag:"SLR",name:"A 35mm SLR",examples:"Canon AE-1 / Nikon FM2",
+ desc:"You set aperture, shutter and focus yourself. Interchangeable lenses, see-what-you-get framing — the most solid way to learn photography."},
+slr120:{tag:"Medium-format SLR",name:"A 120 SLR",examples:"Hasselblad 500C/M / Pentax 67",
+ desc:"You treat shooting as a ritual. Big, slow, waist-level finder, firm shutter — every frame deserves a pause."},
+rf:{tag:"Rangefinder",name:"A 35mm rangefinder",examples:"Leica M6 / Voigtländer Bessa",
+ desc:"Small, quiet, soft shutter — close to people without drawing attention. Split-image focusing feels like a craft."},
+rangefinder120:{tag:"Medium-format rangefinder",name:"A 120 rangefinder",examples:"Mamiya 7 II / Fuji GF670",
+ desc:"Landscape-level resolution without the bulk. Light and quiet — the hidden pick for travel and wide scenery."}
+};
+const LABS=[
+{id:"A",name:"Sunset Photo Lab",dist:"1.2 mi",spec:"C-41 color",price:15,pp:13,time:"3–5 days",rec:true,partner:true,mail:false},
+{id:"B",name:"Eastside Film Lab",dist:"2.8 mi",spec:"C-41 + B&W",price:18,pp:0,time:"4–6 days",rec:false,partner:false,mail:false},
+{id:"C",name:"Downtown Camera",dist:"3.5 mi",spec:"C-41 · ECN-2 · B&W",price:22,pp:0,time:"5–7 days",rec:false,partner:false,mail:false},
+{id:"D",name:"The Darkroom — mail-in",dist:"By post",spec:"C-41 + B&W",price:12,mp:9,time:"5–7 days",partner:false,mail:true},
+{id:"E",name:"Film Photography Project — mail-in",dist:"By post",spec:"Color + B&W",price:14,mp:11,time:"6–8 days",partner:false,mail:true}
+];
+
+/* ============ State ============ */
+const state={tab:'home',user:null,member:false,filter:'all',
+  film:null,scan:null,cam:null,guideFilm:'gold200',
+  quizMode:'full',qcur:0,qans:[],pickedFilm:null,
+  create:null,devPath:'mail'};
+
+/* ============ Toast ============ */
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+ clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);}
+
+/* ============ Tab routing ============ */
+const TABS=['home','stories','tools','me'];
+function go(tab){
+  closeOv();
+  state.tab=tab;
+  TABS.forEach(t=>{const el=document.getElementById('screen-'+t);el.hidden=(t!==tab);});
+  document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.bn===tab));
+  document.querySelector('.app-header').classList.toggle('solid',tab!=='home');
+  document.getElementById('app-body').scrollTop=0;
+  if(tab==='home')renderHome();
+  if(tab==='stories')renderStories();
+  if(tab==='tools')renderTools();
+  if(tab==='me')renderMe();
+}
+
+/* ============ Full-screen overlay stack ============ */
+const ovStack=[];
+function setNavVisible(v){const nv=document.querySelector('.bottom-nav');if(nv)nv.style.display=v?'grid':'none';}
+function pushOv(html,activeBn){
+  const ov=document.getElementById('ov');
+  ovStack.push(html);
+  ov.hidden=false;ov.innerHTML=html;
+  ov.scrollTop=0;
+  setNavVisible(false);
+  if(activeBn){document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.bn===activeBn));}
+}
+function backOv(){
+  ovStack.pop();
+  const ov=document.getElementById('ov');
+  if(ovStack.length){ov.innerHTML=ovStack[ovStack.length-1];ov.scrollTop=0;setNavVisible(false);}
+  else closeOv();
+}
+function closeOv(){
+  ovStack.length=0;
+  const ov=document.getElementById('ov');ov.hidden=true;ov.innerHTML='';
+  setNavVisible(true);
+  document.querySelectorAll('.bn').forEach(b=>b.classList.toggle('active',b.dataset.bn===state.tab));
+}
+
+/* ============ Modal ============ */
+function openModal(html){const m=document.getElementById('modal');m.innerHTML=html;m.classList.add('open');}
+function closeModal(){const m=document.getElementById('modal');m.classList.remove('open');m.innerHTML='';}
+
+/* ============ Roll stories ============ */
+const STORIES=[
+{id:14,film:"gold200",place:"Pittsburgh",month:"October",by:"Maya L.",exp:36,dev:24,shared:6,title:"My first month living alone.",
+ frames:[
+  {n:1,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VRoQbathIoZfqGxFLOIcUz2ynWh",note:"Boxes everywhere, but the light already felt like home.",cap:"The first day. Boxes, one chair, and light that already felt like home."},
+  {n:7,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Yd9ObmbZBow3fdxOYrScpLORnVc",note:"The bus window looked gold, I almost missed my stop.",cap:"The bus home from class. I learned the city one window at a time."},
+  {n:14,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FyQNblKR1oC86LxgJ7TcG94HnyW",note:"Pasta I made myself. I think it was good — I couldn't tell.",cap:"The first dinner I cooked entirely for myself."},
+  {n:21,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RIqebwHnAoTmghxcphccV9F1n9e",note:"Rain on the window. I just stood and watched it.",cap:"After the rain, the window kept the light for a while."},
+  {n:24,ruined:true,img:"",note:"The hallway at night, completely dark. I hoped something would be there.",cap:"The film came back blank. But I remember the hallway anyway."},
+  {n:36,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HXRNbs1SzoUW6cxg5bCcAIqbnZg",note:"Mom in the kitchen light. I wanted to keep this exactly.",cap:"Mom came to visit. She asked if I was eating well."}]},
+{id:9,film:"gold200",place:"Seoul",month:"August",by:"Jisoo P.",exp:36,dev:36,shared:5,title:"A summer with my grandmother.",
+ frames:[
+  {n:3,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QGMebhHa0o7OXuxU6V3cMlUqnGg",note:"She wouldn't let me take her portrait, so I caught her hands.",cap:"Grandma's hands at the sink. She cooks the way she talks — without hurry."},
+  {n:11,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QskGb9jRtoyRdnxxbtKcMC3Mnjf",note:"She sat fanning herself and asked about my whole life.",cap:"Her garden in the afternoon. She fanned herself and asked about my life."},
+  {n:19,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TVATbLYnfoxwNbx1TKScmRCInIe",note:"She laughed and I almost dropped the camera.",cap:"She laughed at something I said, and the whole table felt warm."},
+  {n:27,ruined:true,img:"",note:"I thought I caught her smiling at the door.",cap:"Light leaked in. The frame is orange and soft — I kept it anyway."},
+  {n:30,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JT1ZbmiM9oQki7xNEm3cOSNOnEc",note:"Asleep by the window. I wanted to keep that afternoon.",cap:"She naps by the window. I wanted the afternoon to last a little longer."}]},
+{id:21,film:"portra400",place:"Boston",month:"September",by:"Daniel R.",exp:36,dev:30,shared:5,title:"First semester away from home.",
+ frames:[
+  {n:2,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/U4Zrb17xtobPzmxTBkOc5mZPnmh",note:"The dorm before I unpacked. Everything ahead.",cap:"My dorm before I unpacked. Everything ahead of me."},
+  {n:9,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AZTebLvIuo3l1qxcZozci9tRnZb",note:"She already felt like a friend, after one day.",cap:"The people I met in the first week. Friends already."},
+  {n:15,ruined:true,img:"",note:"Fog over the field, I think it was beautiful.",cap:"Out of focus. I remember the fog more than the photo."},
+  {n:22,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZZ6tbPOaooeur6xeVAscHsPqnDc",note:"The river at dusk, everything orange.",cap:"The river at dusk. Everyone sat on the grass like it was planned."},
+  {n:33,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/E3ssbsgeZojm6vxhTVzcI2Bdnbd",note:"The lamp was the only light left.",cap:"Late study nights. The lamp stayed on longer than I did."}]},
+{id:7,film:"trix",place:"Shanghai",month:"November",by:"Lin W.",exp:36,dev:36,shared:6,title:"36 photos of people I almost forgot.",
+ frames:[
+  {n:4,img:"https://aka.doubaocdn.com/s/USYusejrVt",note:"She looked right at me, I almost didn't press.",cap:"The little shop off the main street. A face I almost walked past."},
+  {n:11,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KwFPbxn5qo9l0hxtANFcRTD1n3c",note:"Steam from the noodle stall, I hoped it would show.",cap:"The noodle vendor on my corner. He works inside a cloud of steam."},
+  {n:18,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PjPLbwBszoXClKxKrLickbm1nrh",note:"He was already walking away.",cap:"The long walk home, and a man who walks slower than everyone."},
+  {n:23,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KhXxb4DO8osfA5x2WGRcSrgcnJC",note:"He rests on the same step every afternoon.",cap:"He rests on the same step every afternoon."},
+  {n:29,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ULuNbYAKDoFEFsxrJsUcR32SnCg",note:"He stood in the rain, waiting for someone.",cap:"He stood in the rain like he was waiting for someone."},
+  {n:35,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NJLIbHqk9o5Jm1xrVP6c06tcnGf",note:"A man and his dog, last light.",cap:"A man and his dog, last light. I almost didn't press the shutter."}]},
+{id:31,film:"c5219",place:"Tokyo",month:"December",by:"Kenji M.",exp:36,dev:24,shared:4,title:"The city at 3 a.m.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SEWObpsmGoGXO8xoEoych4WCn0f",note:"Neon on wet pavement — the whole street was a color.",cap:"The street where neon reflects on wet pavement."},
+  {n:17,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XVacbwEdKoRhfRxTcOWcDeb4nzb",note:"Empty roads, still glowing.",cap:"Empty roads, and the city still glowing."},
+  {n:22,ruined:true,img:"",note:"A train going past, I held the shutter too long.",cap:"Motion blur, almost abstract. It looks like the speed I felt."},
+  {n:28,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WqZebhyqmoYPBUxt5sqciGmGnlj",note:"She stood under the red light for a moment.",cap:"She stood under the red light for a moment."}]},
+{id:18,film:"colorplus",place:"Portland",month:"June",by:"Ava T.",exp:36,dev:36,shared:3,title:"A weekend with nothing to do.",
+ frames:[
+  {n:6,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EBYUby13YoVWOSxDiRxclJbQniv",note:"We sat in the park and forgot the time.",cap:"We sat in the park and forgot the time."},
+  {n:20,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/K28Hbsi0yopNcWxDh4GcEdGwnwd",note:"The afternoon on the grass.",cap:"The afternoon on the grass."},
+  {n:31,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BFB1bIFCAo4IUBxxuSBcH3JIned",note:"Everyone stayed until the light went.",cap:"Everyone stayed until the light went."}]},
+{id:25,film:"ultramax",place:"Home",month:"March",by:"Noah K.",exp:36,dev:30,shared:4,title:"My sister's 25th birthday.",
+ frames:[
+  {n:9,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/X5JrbojFYok4a1xcJjQcfxDknZf",note:"Twenty-five candles, one long table.",cap:"Twenty-five candles and one long table."},
+  {n:22,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AWNVbgDWPo89USxNJgNcgBE9nIg",note:"The same wish she made at five.",cap:"She made the same wish she made at five."},
+  {n:28,ruined:true,img:"",note:"Everyone was laughing, I held it up too fast.",cap:"Blurred faces. You can hear the laughter without seeing it."},
+  {n:34,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O9y6bYuUhovgRxxl0ppc64osnwg",note:"The last frame of the night.",cap:"The last frame of the night."}]},
+{id:11,film:"hp5",place:"Taipei",month:"July",by:"Mei C.",exp:36,dev:36,shared:3,title:"Grandmother's kitchen.",
+ frames:[
+  {n:4,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A0S2boCe1oKUV1xyduZcKopfnLd",note:"Her kitchen, the quietest room.",cap:"Her kitchen is the quietest room I know."},
+  {n:16,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OnIKbecwmopkjgxrGTvctTZ5nVf",note:"She looked at me like she was remembering.",cap:"She looked at me like she was remembering."},
+  {n:27,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GmF0bL1fUo8UsxxfvB5cjFopnYf",note:"She rests her chin in her hand and thinks.",cap:"She rests her chin in her hand and thinks."}]},
+{id:34,film:"portra800",place:"New York",month:"January",by:"Sofia D.",exp:36,dev:18,shared:3,title:"Letters I never sent.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EDZpbOZfnop8NCxpeuacs0ctnEf",note:"The lamp stays on, the room stays warm.",cap:"The lamp stays on, and the room stays warm."},
+  {n:19,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SxcBby9hUo5Vh1xuhfgc5LX0nne",note:"She sat by the window a long time.",cap:"She sat by the window a long time."},
+  {n:32,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FcHTbN17goc10rxsWlQcUmGpnLg",note:"The last light, the last sentence.",cap:"The last light, the last sentence."}]},
+{id:40,film:"portra160",place:"Provence",month:"June",by:"Camille L.",exp:36,dev:30,shared:3,title:"The last summer before the wedding.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EoQab9ox6oN0bGxdBvac4jy4nBh",note:"The light through the shutters, the morning before.",cap:"Morning light through the shutters, the day before the wedding."},
+  {n:19,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EraVbqvdboZkjLxnERIcWVqanmc",note:"Her hands arranging the flowers, slowly.",cap:"Her hands arranging the flowers, one stem at a time."},
+  {n:32,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IovAbH1XXoGbXPx64BLcLNtRn3g",note:"The whole table quiet for one second.",cap:"The long table, held in a single quiet second."}]},
+{id:41,film:"fujic100",place:"Hokkaido",month:"January",by:"Aoi S.",exp:36,dev:24,shared:3,title:"A quiet season by the lake.",
+ frames:[
+  {n:3,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CAt5bBDF5oT36XxdooycYMV4nNq",note:"The lake frozen pale, the sky inside it.",cap:"The pale frozen lake, the sky underneath."},
+  {n:17,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VJMJbLgJUoKHzkxuVSHcWF2JnWh",note:"Smoke from the cabin, straight up in the cold.",cap:"Cabin smoke rising, perfectly still in the cold."},
+  {n:29,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ChmxbM1ipoC1rPx9RdDcvVEPnBf",note:"The last evening, everything blue-white.",cap:"The last evening, pale and blue-white."}]},
+{id:42,film:"fujic200",place:"Okinawa",month:"April",by:"Ren T.",exp:36,dev:36,shared:3,title:"The coast where we said goodbye.",
+ frames:[
+  {n:4,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JOj2bWf3GokyTAx0Kydcl6o3nZf",note:"The water the color of a green sky.",cap:"The water, the color of a green sky."},
+  {n:16,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PLTSbqeVgomUo9xtZZ6cwP8gntA",note:"She stood at the railing looking out.",cap:"She stood at the railing, looking out."},
+  {n:31,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KPL1beLQhoxCbFxzHOUcph3tnqb",note:"The boat leaving, already small.",cap:"The boat leaving, already small."}]},
+{id:43,film:"fujic400",place:"Melbourne",month:"August",by:"Isla M.",exp:36,dev:30,shared:3,title:"Walking the city after the rain.",
+ frames:[
+  {n:6,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AjuNbTXBEo4vHbxb12fcW3Qan4E",note:"Wet streets the color of slate.",cap:"Wet streets, the color of slate."},
+  {n:18,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YBzVbsNukoMm3jxkTPdcVMRkngd",note:"The lane, one lamp still on.",cap:"The lane, with one lamp still on."},
+  {n:33,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V1fmbZ9lJorqH5xMgklccTBMnyh",note:"The skyline washed clean.",cap:"The skyline, washed clean."}]},
+{id:44,film:"c5203",place:"Los Angeles",month:"July",by:"Theo R.",exp:36,dev:36,shared:3,title:"Fifty frames of a long afternoon.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XCB8bs10Voc4SBxZ6slcsP1WnAe",note:"The pool light so bright it hurt.",cap:"The pool, bright enough to hurt."},
+  {n:21,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Rz3cboyEHoJG92xa1U5cCWf6nLf",note:"Palm shadows stretching across the road.",cap:"Palm shadows stretching across the road."},
+  {n:34,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SKEvbL3d4oQuzYxjRifcK7dinpd",note:"The whole afternoon golden and still.",cap:"The whole afternoon, golden and still."}]},
+{id:45,film:"c5207",place:"Route 1",month:"September",by:"Marco D.",exp:36,dev:28,shared:3,title:"The road home, slowly.",
+ frames:[
+  {n:4,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ge19bsX1OoGGGZxCsIqcJ2gonad",note:"The cliffs opening to the sea.",cap:"The cliffs, opening onto the sea."},
+  {n:17,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EZP1b4xGfoWHhGx6x3NcO3f6nwh",note:"A diner sign glowing in the fog.",cap:"The diner sign, glowing in the fog."},
+  {n:30,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TX8NbOP3go6MUcxjV9ic2XVVnQf",note:"The road curving into the light.",cap:"The road, curving into the light."}]},
+{id:46,film:"c5213",place:"Montreal",month:"February",by:"Elise V.",exp:36,dev:24,shared:3,title:"The last winter in that house.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GxFhbFOL8obDfWxTz8UcpqJinRW",note:"The lamp made the room amber.",cap:"The lamp, making the room amber."},
+  {n:19,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UXagbMSHYotsjKxmI6rcM0Fbn2f",note:"Snow at the window, the house quiet.",cap:"Snow at the window, the house quiet."},
+  {n:32,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HPHhbyKIMoKfazxz97wcj3ilneg",note:"The last evening, the lights dim.",cap:"The last evening, the lights dimmed."}]},
+{id:47,film:"c5294",place:"Berlin",month:"November",by:"Lukas H.",exp:36,dev:30,shared:3,title:"The night the old town closed.",
+ frames:[
+  {n:6,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T19TbEdQ0oCQKWxaHr7cIQzNn5d",note:"Empty streets, the old signs dark.",cap:"Empty streets, the old signs dark."},
+  {n:20,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KX8DbStN8oFKkAxGoigcsww8nSf",note:"The last doorway with its light on.",cap:"The last doorway, with its light on."},
+  {n:33,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P2sdb8qG9orh5CxQPC7cAAW1nZf",note:"The square gone quiet forever.",cap:"The square, gone quiet."}]},
+{id:48,film:"tmax",place:"Chicago",month:"March",by:"David P.",exp:36,dev:36,shared:3,title:"Lines of the city I'm leaving.",
+ frames:[
+  {n:4,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PNCqbKmmzorvezx4qkRc0YUjnNc",note:"The grid of windows, one lit.",cap:"The grid of windows, only one lit."},
+  {n:17,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AIbNbhARgoMxSVxoJnHc7rtrnWh",note:"The bridge sharp against the gray.",cap:"The bridge, sharp against the gray."},
+  {n:31,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I90jbpXp6ojfjPxwOWAcZu0qnEd",note:"The last skyline, every line clear.",cap:"The last skyline, every line clear."}]},
+{id:49,film:"delta",place:"Edinburgh",month:"May",by:"Fiona C.",exp:36,dev:26,shared:3,title:"Portraits of my grandmother's hands.",
+ frames:[
+  {n:5,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IvvsbLg3xou8rgxhtOKcTiuOnBL",note:"Her hands folded, the ring she never removed.",cap:"Her hands folded, the ring she never removed."},
+  {n:18,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BFuUbvCwYo9QMKxtFlsc9oMEndg",note:"The window, the room in soft gray.",cap:"The window, the room in soft gray."},
+  {n:32,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQwdbREvKoR2DSxO1utcBqopnBh",note:"Her holding the teacup at the last.",cap:"Her holding the teacup, at the last."}]},
+{id:50,film:"proimage",place:"Toronto",month:"August",by:"Nadia K.",exp:36,dev:28,shared:3,title:"The summer I worked in the city.",
+ frames:[
+  {n:4,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UTnNb1useoaM18x1xDhcD7zUnlf",note:"The storefront on my morning walk.",cap:"The storefront on my morning walk to work."},
+  {n:17,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ot12b6JYiopm4ixCMPKcrpTfnhf",note:"The lunch bench by the fountain.",cap:"The lunch bench by the fountain, mid-shift."},
+  {n:31,img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UlOLbnbnPoeKnMxoSZ5cEBkfnAR",note:"The last day, the street in warm light.",cap:"The last day, the street in warm light."}]}
+];
+
+/* seed engagement */
+const ENG={
+14:{likes:128,shares:14,comments:[
+ {a:3,n:"Zoe",t:"Frame 36 with your mom made me call mine right after."},
+ {a:4,n:"Ethan",t:"The light on the floor in frame 1 — that is the whole thing."},
+ {a:7,n:"Ruby",t:"I'm buying my first roll this weekend because of this."}]},
+9:{likes:204,shares:26,comments:[
+ {a:2,n:"Joon",t:"She fans herself and asks about your life. My grandma does exactly this."},
+ {a:6,n:"Grandma H.",t:"Eat well, child."},
+ {a:8,n:"Arjun",t:"Frame 30 at the window. I want that afternoon to last too."}]},
+21:{likes:156,shares:19,comments:[
+ {a:1,n:"Hana",t:"The river at dusk is every single semester."},
+ {a:5,n:"Lucia",t:"Friends already — what a first week."}]},
+7:{likes:241,shares:32,comments:[
+ {a:4,n:"Ethan",t:"The noodle vendor's steam is incredible."},
+ {a:2,n:"Joon",t:"People you almost forgot — what a title."},
+ {a:7,n:"Ruby",t:"The last frame with the dog almost broke me."}]},
+31:{likes:187,shares:28,comments:[
+ {a:8,n:"Arjun",t:"Neon on wet pavement is why film exists."},
+ {a:3,n:"Zoe",t:"The frame under the red light is haunting."}]},
+18:{likes:98,shares:11,comments:[
+ {a:5,n:"Lucia",t:"Everyone stayed until the light went. Yes."}]},
+25:{likes:143,shares:16,comments:[
+ {a:1,n:"Hana",t:"The same wish she made at five — I cried."},
+ {a:6,n:"Grandma H.",t:"Many happy returns, dear."}]},
+11:{likes:119,shares:13,comments:[
+ {a:3,n:"Zoe",t:"The quietest room I know. Beautiful."},
+ {a:8,n:"Arjun",t:"Frame 16, her remembering something."}]},
+34:{likes:176,shares:24,comments:[
+ {a:2,n:"Joon",t:"The last light, the last sentence. Perfect ending."},
+ {a:4,n:"Ethan",t:"Send the letters."}]}
+};
+STORIES.forEach(s=>{const e=ENG[s.id]||{likes:0,shares:0,comments:[]};
+ s.likes=e.likes;s.shares=e.shares;s.liked=false;
+ s.comments=e.comments.map(c=>({name:c.n,avatar:av(c.a),text:c.t}));});
+
+/* icons */
+const ICON_HEART='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20.5s-7.3-4.6-9.7-9C.7 8.2 2.5 4.8 5.9 4.8c1.9 0 3.3 1.1 4.1 2.2.8-1.1 2.2-2.2 4.1-2.2 3.4 0 5.2 3.4 3.6 6.7-2.4 4.4-9.7 9-9.7 9z"/></svg>';
+const ICON_CMT='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.4A8 8 0 1 1 20.5 11.5z"/></svg>';
+const ICON_SHR='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>';
+const ICON_CHEV='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>';
+
+/* ============ Full quiz — 13 questions (10 film + 3 scan) ============ */
+const QUIZ=[
+{t:"Which window do you most want to open when you wake?",o:[
+ {tx:"A wooden balcony with golden dust in the air",add:{warm:3,bright:1}},
+ {tx:"A misty blue-gray coast with the sea not yet awake",add:{cool:3}},
+ {tx:"A garden where a whole paint tray has been tipped over",add:{sat:3,cool:1}},
+ {tx:"A neon night street where the lights have not gone quiet",add:{cine:3,light:2}}]},
+{t:"If tenderness had a picture, it would be —",o:[
+ {tx:"Firelight falling across a face",add:{warm:3,light:1}},
+ {tx:"Water marks left on glass after rain",add:{cool:3}},
+ {tx:"A flooded, glowing shot in an old film",add:{cine:3}},
+ {tx:"A quiet silhouette with no color",add:{bw:3}}]},
+{t:"Facing a whole landscape, what does the lens aim at first?",o:[
+ {tx:"Someone's expression in the middle of the crowd",add:{pro:3,warm:1}},
+ {tx:"The farthest, most heavily colored mountain",add:{sat:3,bright:1}},
+ {tx:"A turning figure at the corner, about to vanish",add:{bw:2,cine:1}},
+ {tx:"The soft bokeh of lights just coming on",add:{cine:3,light:2}}]},
+{t:"When you press the shutter, what do you most want to keep?",o:[
+ {tx:"A warmth you can't quite say out loud",add:{warm:2,pro:2}},
+ {tx:"Clean air you can almost breathe",add:{cool:3,bright:1}},
+ {tx:"A single strong punch of color",add:{sat:3}},
+ {tx:"The drama of light and shadow",add:{bw:2,cine:2}}]},
+{t:"What light do you want to put onto the film?",o:[
+ {tx:"Strong midday sun, clean and bright",add:{bright:3,sat:1}},
+ {tx:"Soft scattered light on a cloudy day",add:{cool:2,pro:1}},
+ {tx:"Failing evening light, now bright now dim",add:{cine:2,light:3}},
+ {tx:"Dramatic light falling on the lead",add:{bw:2,cine:1}}]},
+{t:"If life were a film, what would it look like?",o:[
+ {tx:"The warm warmth of family and home",add:{warm:3}},
+ {tx:"Cold, distant, with room to breathe",add:{cool:3}},
+ {tx:"Heavy inks and saturated colors",add:{sat:2,cine:2}},
+ {tx:"An old black-and-white movie",add:{bw:3}}]},
+{t:"Taking photos is more like —",o:[
+ {tx:"Raising the hand and pressing, no thought",add:{cam_point:3,warm:1}},
+ {tx:"Setting the dials with my own hands",add:{cam_slr:3,bright:1}},
+ {tx:"Quietly getting a little closer",add:{cam_rf:3,bw:1}},
+ {tx:"Waiting for the one frame as a ritual",add:{fmt120:3,cam_slr:1}}]},
+{t:"What moves you first in a photo?",o:[
+ {tx:"A tender atmosphere",add:{warm:2,pro:2}},
+ {tx:"Sharp detail and clean color blocks",add:{bright:2,detail:2,sat:1}},
+ {tx:"A cinematic mood",add:{cine:3}},
+ {tx:"Enduring grays and the human story",add:{bw:3}}]},
+{t:"If photos could speak, the tone would be —",o:[
+ {tx:"Warm, like an old friend",add:{warm:3}},
+ {tx:"Calm and restrained",add:{cool:3}},
+ {tx:"Hot, striking at first glance",add:{sat:2,cine:1}},
+ {tx:"Deep, weighted with a story",add:{bw:2,cine:1}}]},
+{t:"Where do you most often take the camera?",o:[
+ {tx:"A sunny seaside, with friends",add:{cam_point:2,warm:2}},
+ {tx:"The late-night city and its neon",add:{cam_rf:2,cine:2,light:1}},
+ {tx:"The mountains at sunrise",add:{cam_rf:1,fmt120:2,sat:1,bright:1}},
+ {tx:"The lanes of an old city",add:{cam_slr:2,bw:1,pro:1}}]},
+{t:"The same evening, how should it sit in the photo?",o:[
+ {tx:"A deeper, honey gold",add:{sn:3}},
+ {tx:"A clearer, cooler blue",add:{sf:3}},
+ {tx:"Exactly the way it was",add:{sh:3}},
+ {tx:"Clear cinema, warm and cool interwoven",add:{sf:2,sh:1}}]},
+{t:"For a portrait, how do you want the skin?",o:[
+ {tx:"Pale and ruddy, bright",add:{sn:3}},
+ {tx:"Cool white, a little distant",add:{sf:3}},
+ {tx:"True to the real skin",add:{sh:3}},
+ {tx:"Heavy outline, outlined in light",add:{sh:2,sf:1}}]},
+{t:"If photos had a 'feel', it would be —",o:[
+ {tx:"Creamy and warm",add:{sn:3}},
+ {tx:"Glassy and cool",add:{sf:3}},
+ {tx:"Sharp like a blade, true",add:{sh:3}},
+ {tx:"A faintly glowing film mood",add:{sn:2,sh:1}}]}
+];
+
+/* ============ Scan-only quiz — 7 questions ============ */
+const SCAN_QS=[
+{t:"For this roll, what kind of scene were you mostly in?",o:[
+ {tx:"Outdoor sun · seaside, streets, sunny travel",add:{sn:2,sh:1,scene_out:1}},
+ {tx:"Outdoor nature · forests, plants, mountains, parks",add:{sh:2,sf:1,scene_nature:1}},
+ {tx:"Outdoor dim · overcast, dusk, rain, snow",add:{sf:2,sh:1,scene_dim:1}},
+ {tx:"Indoor warm light · home, restaurants, warm rooms",add:{sn:3,scene_indoor:1}},
+ {tx:"City at night · neon, lamplight, night portraits",add:{sf:2,sh:1,scene_night:1}},
+ {tx:"Mostly portraits · want the skin to shine",add:{sn:2,scene_portrait:1}}]},
+{t:"What time of day did you shoot most?",o:[
+ {tx:"Early morning, cool blue, mist not lifted",add:{sf:2,time_dawn:1}},
+ {tx:"Midday, strong overhead light, standard color",add:{sh:2,time_noon:1}},
+ {tx:"Golden hour, warm-orange side light",add:{sn:3,time_golden:1}},
+ {tx:"Blue hour, cool sky, warm ground lights",add:{sf:2,sn:1,time_blue:1}},
+ {tx:"Fully night, only artificial light",add:{sf:2,time_night:1}}]},
+{t:"The light at the time felt more —",o:[
+ {tx:"Warm — tungsten, candle, sunrise or sunset",add:{sn:2,light_warm:1}},
+ {tx:"Cool — overcast, fluorescent, night blue",add:{sf:2,light_cool:1}},
+ {tx:"Mixed — warm window light plus cool ambient",add:{sf:1,sh:1,light_mix:1}},
+ {tx:"Standard daylight, no obvious color cast",add:{sh:2,light_neutral:1}}]},
+{t:"Your exposure for this roll was roughly —",o:[
+ {tx:"Brighter, overexposed +1/2 to +1, want creamy",add:{sn:2,exp_over:1}},
+ {tx:"Followed the meter, accurate exposure",add:{sh:2,exp_std:1}},
+ {tx:"Darker, underexposed 1/2, want rich color",add:{sf:2,exp_under:1}},
+ {tx:"Not sure, contrast was high and exposure varied",add:{sh:2,exp_mixed:1}}]},
+{t:"When scanning, what do you want the technician to do?",o:[
+ {tx:"Push it warmer, fuller gold",add:{sn:3}},
+ {tx:"Push it cooler, clearer blue",add:{sf:3}},
+ {tx:"Keep it fully neutral, the film's own color",add:{sh:3}},
+ {tx:"Cinematic midtones, warm and cool intertwined",add:{sf:2,sh:1}}]},
+{t:"Contrast and grain — which do you care about more?",o:[
+ {tx:"High contrast, dark shadows, powerful like a poster",add:{sf:1,sh:2,con_high:1}},
+ {tx:"Low contrast, many gray layers, like a Japanese portrait",add:{sn:2,sh:1,con_low:1}},
+ {tx:"Strong grain, gritty and real, like a documentary",add:{sh:2,grain_high:1}},
+ {tx:"Fine grain, clean as CG",add:{sn:1,sf:1,grain_fine:1}}]},
+{t:"When the photos come back, what should people notice first?",o:[
+ {tx:"The atmosphere, the temperature of that light",add:{sn:3}},
+ {tx:"The color, the cool vivid blue-green",add:{sf:3}},
+ {tx:"The detail and truth, like being there",add:{sf:0,sh:3}},
+ {tx:"A film frame, the story feeling before color",add:{sf:1,sh:2}}]}
+];
+
+/* ============ Guide data ============ */
+const LIGHT_SCENARIOS=[
+ {key:"golden",n:"Golden hour",what:"The first hour after sunrise and last hour before sunset — low, warm, long shadows.",
+  how:"Face the light for soft flare; let the subject sit in the glow; expose +1 stop for rich color."},
+ {key:"midday",n:"Bright midday sun",what:"10am–2pm, hard overhead shadows and the strongest contrast.",
+  how:"Move people into open shade rather than direct sun; expose for the sky; ideal for landscapes and architecture."},
+ {key:"shade",n:"Open shade",what:"Shade that still faces the sky — a porch, doorway, or the side of a building.",
+  how:"Even, soft, slightly cool light that flatters faces; meter off the face; warm it slightly in the scan."},
+ {key:"overcast",n:"Overcast",what:"Clouds scatter the sun, so there are no shadows and colors stay soft.",
+  how:"Often richer than harsh sun; expose normally or +1; great for portraits, greenery, and true color."},
+ {key:"window",n:"Window light",what:"A large window lighting one side of the subject, falling off across the room.",
+  how:"Place the subject at 45° to the window, near it; no flash; hold the camera steady — a natural portrait light."},
+ {key:"night",n:"After dark / indoors",what:"Lamps, tungsten, neon — the small light sources of evening.",
+  how:"Use a 400/800 film; balance under lamps; slow the shutter and steady the camera; flash only when necessary."}
+];
+function settingsRows(iso){
+ if(iso<=100)return[
+  {scene:"Bright sun",shutter:"1/250",ap:"f/8–f/11"},
+  {scene:"Open shade / overcast",shutter:"1/125",ap:"f/4"},
+  {scene:"Window light",shutter:"1/60",ap:"f/2.8 (steady)"}];
+ if(iso<=250)return[
+  {scene:"Bright sun",shutter:"1/250–1/500",ap:"f/8"},
+  {scene:"Shade / overcast",shutter:"1/125",ap:"f/5.6"},
+  {scene:"Window / late day",shutter:"1/60",ap:"f/2.8"}];
+ if(iso<=500)return[
+  {scene:"Sun / outdoors",shutter:"1/500",ap:"f/8"},
+  {scene:"Overcast / shade",shutter:"1/250",ap:"f/5.6"},
+  {scene:"Window / dusk",shutter:"1/125",ap:"f/2.8"},
+  {scene:"Night / neon",shutter:"1/60",ap:"f/2 (steady)"}];
+ return[
+  {scene:"Overcast / dusk",shutter:"1/250",ap:"f/4"},
+  {scene:"Indoor / lamps",shutter:"1/125",ap:"f/2.8"},
+  {scene:"Candlelight / night",shutter:"1/60",ap:"f/2 (steady)"}];
+}
+function avoidList(iso){
+ const common=["Opening the camera back or rewinding before the roll is finished.","Relying on the on-camera flash farther than about 3 m / 10 ft.",
+  "Hand-holding below 1/60 s without steadying the camera.","Strong backlight on a fully automatic camera without a small exposure compensation."];
+ if(iso<=100)return["Dark rooms, shadowed corners and night scenes — the film is too slow.",
+  "Fast-moving subjects in shade — the shutter will be too slow.","Backlit subjects without adding exposure."].concat(common);
+ if(iso<=250)return["Pitch-dark rooms and night scenes without a flash.","Deep indoor corners far from a window."].concat(common);
+ if(iso<=500)return["Completely black scenes with no light source at all.","Heavy shadows falling across a face."].concat(common);
+ return["Harsh midday sun — the sensitivity is wasted there.","Expecting the clarity of a 100 film in large prints."].concat(common);
+}
+function guideFor(k){
+ const F=FILMS[k],iso=F.iso;
+ const darkFilm=iso>=400;
+ const light=darkFilm?"overcast, window light, dusk, and lit nights":"bright daylight, golden hour, and open shade";
+ const expo=F.fam==='bw'?"Expose for the shadows; the highlights can be lifted in the scan."
+      :F.fam==='cine'?"Overexpose by a touch for richer color — cine film loves light."
+      :"When unsure, expose a little brighter — slightly overexpose. Color negative film loves light.";
+ const scenarios=LIGHT_SCENARIOS.map(s=>{
+  let fit="great";
+  if(s.key==="night"&&iso<250)fit="careful";
+  if(s.key==="midday"&&iso>500)fit="wasted";
+  return Object.assign({},s,{fit});
+ });
+ return{iso,light,expo,settings:settingsRows(iso),scenarios,avoid:avoidList(iso),
+  tips:[`Set your camera to ISO ${iso}.`,`Seek ${light}.`,expo],subj:F.best};
+}
+
+/* ============ Quiz entry ============ */
+function openQuiz(){
+ state.quizMode='full';state.pickedFilm=null;state.qcur=0;state.qans=[];
+ const html=`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="closeOv()">← Back</button>
+  <div class="eyebrow">Step 01 — Find your film</div>
+  <h2 style="font-family:var(--serif);font-size:34px;font-weight:500;margin:10px 0 4px">Two ways to <em>start.</em></h2>
+  <div class="choose" style="padding:18px 0 0">
+   <div class="qcard" onclick="chooseMode('full')">
+    <div class="qc-tag">New to film</div>
+    <h3>Find my first film</h3>
+    <p>Thirteen questions about your life and the light you love. We pick your film, the way to scan, and a camera.</p>
+    <div class="qc-go">Start the full quiz →</div>
+   </div>
+   <div class="qcard" onclick="chooseMode('scan')">
+    <div class="qc-tag">Already have a roll</div>
+    <h3>Choose how to scan</h3>
+    <p>Seven questions about the scenes and light you shot. We match the best scan style for that film.</p>
+    <div class="qc-go">Start the scan quiz →</div>
+   </div>
+  </div></div>`;
+ pushOv(html,'tools');
+}
+function chooseMode(m){
+ state.quizMode=m;
+ if(m==='full'){
+  state.qcur=0;state.qans=Array(QUIZ.length).fill(null);
+  renderQuizShell(QUIZ.length);renderQ();
+ }else{
+  state.pickedFilm=null;
+  renderScanPre();
+ }
+}
+function backToChoose(){
+ const ov=document.getElementById('ov');
+ ov.innerHTML=`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="closeOv()">← Back</button>
+  <div class="eyebrow">Step 01 — Find your film</div>
+  <h2 style="font-family:var(--serif);font-size:34px;font-weight:500;margin:10px 0 4px">Two ways to <em>start.</em></h2>
+  <div class="choose" style="padding:18px 0 0">
+   <div class="qcard" onclick="chooseMode('full')">
+    <div class="qc-tag">New to film</div><h3>Find my first film</h3>
+    <p>Thirteen questions about your life and the light you love. We pick your film, the way to scan, and a camera.</p>
+    <div class="qc-go">Start the full quiz →</div></div>
+   <div class="qcard" onclick="chooseMode('scan')">
+    <div class="qc-tag">Already have a roll</div><h3>Choose how to scan</h3>
+    <p>Seven questions about the scenes and light you shot. We match the best scan style for that film.</p>
+    <div class="qc-go">Start the scan quiz →</div></div>
+  </div></div>`;
+}
+
+/* scan-only: film picker */
+function renderScanPre(){
+ const ov=document.getElementById('ov');
+ const groups=[
+  ['Kodak color',["gold200","colorplus","ultramax","proimage","portra160","portra400","portra800"]],
+  ['Fujifilm color',["fujic100","fujic200","fujic400"]],
+  ['Motion picture',["c5203","c5207","c5213","c5219","c5294"]],
+  ['Black & white',["trix","hp5","tmax","delta"]]
+ ];
+ let opts='<option value="">— Pick your film —</option>';
+ groups.forEach(([l,ks])=>{opts+=`<optgroup label="${l}">`+ks.map(k=>`<option value="${k}">${FILMS[k].name}</option>`).join('')+'</optgroup>';});
+ ov.innerHTML=`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="backToChoose()">← Back</button>
+  <div class="eyebrow">Scan-only</div>
+  <h2 style="font-family:var(--serif);font-size:30px;font-weight:500;margin:10px 0 18px">Which film is in your camera?</h2>
+  <select id="scan-film" onchange="state.pickedFilm=this.value;document.getElementById('scan-next').disabled=!this.value"
+   style="width:100%;border:1px solid var(--line-2);border-radius:13px;background:var(--paper-3);padding:14px;font-size:15px">${opts}</select>
+  <div style="margin-top:18px"><button class="btn btn-block" id="scan-next" disabled onclick="startScanQuestions()">Continue</button></div>
+ </div>`;
+}
+function startScanQuestions(){
+ if(!state.pickedFilm)return;
+ state.qcur=0;state.qans=Array(SCAN_QS.length).fill(null);
+ renderQuizShell(SCAN_QS.length,true);renderQ();
+}
+
+/* question shell */
+function renderQuizShell(n,scanOnly){
+ const ov=document.getElementById('ov');
+ ov.innerHTML=`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="${scanOnly?'renderScanPre()':'backToChoose()'}">← Back</button>
+  <div class="qmeta-row">
+   <span id="qmeta">Question 01 / ${n}</span>
+   ${scanOnly?'<span class="eyebrow">Scan-only</span>':''}
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <h2 class="qtitle" id="qtitle"></h2>
+  <div id="opts"></div>
+  <div class="qnavrow">
+   <button class="link" id="prev" onclick="prevQ()">← Previous</button>
+   <button class="link" onclick="backToChoose()">Start over</button>
+  </div>
+ </div>`;
+}
+function renderQ(){
+ const list=state.quizMode==='scan'?SCAN_QS:QUIZ;
+ const q=list[state.qcur];
+ document.getElementById('qmeta').textContent=`Question ${String(state.qcur+1).padStart(2,'0')} / ${list.length}`;
+ document.getElementById('bar').style.width=(state.qcur/list.length*100)+'%';
+ document.getElementById('qtitle').textContent=q.t;
+ const box=document.getElementById('opts');box.innerHTML='';
+ q.o.forEach((op,i)=>{
+  const sel=state.qans[state.qcur]===i?'sel':'';
+  box.insertAdjacentHTML('beforeend',
+   `<button class="opt ${sel}" onclick="pickOpt(${i})"><span class="ic">${String.fromCharCode(65+i)}</span><span class="ot">${op.tx}</span>${ICON_CHEV}</button>`);
+ });
+ document.getElementById('prev').disabled=state.qcur===0;
+}
+function pickOpt(i){
+ state.qans[state.qcur]=i;
+ const list=state.quizMode==='scan'?SCAN_QS:QUIZ;
+ renderQ();
+ setTimeout(()=>{if(state.qcur<list.length-1){state.qcur++;renderQ();}else{state.quizMode==='scan'?finishScan():finishFull();}},230);
+}
+function prevQ(){if(state.qcur>0){state.qcur--;renderQ();}}
+
+/* ============ Full quiz scoring ============ */
+function finishFull(){
+ const d={warm:0,cool:0,cine:0,bw:0,bright:0,light:0,sat:0,pro:0,detail:0,sn:0,sf:0,sh:0,
+  cam_point:0,cam_slr:0,cam_rf:0,fmt120:0};
+ state.qans.forEach((ai,qi)=>{if(ai==null)return;const a=QUIZ[qi].o[ai].add||{};
+  for(const k in a)if(k in d)d[k]+=a[k];});
+ const fam=[['warm',d.warm],['cool',d.cool],['cine',d.cine],['bw',d.bw]].reduce((a,b)=>b[1]>a[1]?b:a)[0];
+ const dark=d.light>=2,strong=d.bright>=2;
+ let film;
+ if(fam==='warm'){
+  if(d.pro>=3)film=dark?'portra800':(strong?'portra160':'portra400');
+  else if(dark)film='ultramax';
+  else if(strong)film='proimage';
+  else film=d.sat>d.cool?'gold200':'colorplus';
+ }else if(fam==='cool'){
+  if(strong)film='fujic100';
+  else if(dark||d.sat>=3)film='fujic400';
+  else film='fujic200';
+ }else if(fam==='cine'){
+  if(dark)film=d.sat>=2?'c5219':(d.light>=3?'c5294':'c5213');
+  else film=strong?'c5203':(d.pro>=2?'c5207':'c5213');
+  if(!dark&&d.light>=2)film='c5213';
+ }else{
+  if(d.bright>=2&&d.detail>=2)film='tmax';
+  else if(d.bright>=2||d.pro>=2)film=d.pro>=2?'delta':'tmax';
+  else film=d.pro>=1&&d.light<2?'hp5':'trix';
+  if(d.detail>=2&&d.bright>=2)film='tmax';
+ }
+ /* beginners: avoid ECN-2 cine film — reroute to C-41 */
+ let cineNote='';
+ if(fam==='cine'){
+  if(dark||d.sat>=2){film='ultramax';cineNote='You leaned cinematic and moody. Ultramax 400 gives that bold, dramatic look in common C-41, so any lab can develop it — no specialist ECN-2 needed.';}
+  else{film='gold200';cineNote='You leaned toward a warm story-film feel. Gold 200 keeps that golden, nostalgic look in common C-41, so any lab can develop it — no specialist ECN-2 needed.';}
+ }
+ const sMax=Math.max(d.sn,d.sf,d.sh);
+ const scan=sMax===0?(d.warm>d.cool?'noritsu':(d.cool>d.warm?'fuji':'hasselblad'))
+  :(d.sn===sMax?'noritsu':(d.sf===sMax?'fuji':'hasselblad'));
+ const cam=[['point',d.cam_point],['slr',d.cam_slr],['rf',d.cam_rf]].reduce((a,b)=>b[1]>a[1]?b:a)[0];
+ const w120=d.fmt120>=2;
+ const camKey=cam==='point'?(w120?'point120':'point')
+             :cam==='slr'?(w120?'slr120':'slr')
+             : (w120?'rangefinder120':'rf');
+ state.film=film;state.scan=scan;state.cam=camKey;state.guideFilm=film;
+ renderStarter(film,scan,camKey,cineNote);
+}
+
+/* ============ Scan-only scoring ============ */
+function finishScan(){
+ const d={sn:0,sf:0,sh:0,scene_out:0,scene_nature:0,scene_dim:0,scene_indoor:0,scene_night:0,scene_portrait:0,
+  time_dawn:0,time_noon:0,time_golden:0,time_blue:0,time_night:0,
+  light_warm:0,light_cool:0,light_mix:0,light_neutral:0,
+  exp_over:0,exp_std:0,exp_under:0,exp_mixed:0,
+  con_high:0,con_low:0,grain_high:0,grain_fine:0};
+ state.qans.forEach((ai,qi)=>{if(ai==null)return;const a=SCAN_QS[qi].o[ai].add||{};
+  for(const k in a)if(k in d)d[k]+=a[k];});
+ if(d.scene_indoor||d.scene_portrait)d.sn+=2;
+ if(d.scene_nature||d.scene_dim)d.sf+=2;
+ if(d.scene_night){d.sf+=1;d.sh+=1;}
+ if(d.time_golden)d.sn+=1;
+ if(d.time_dawn||d.time_blue)d.sf+=1;
+ if(d.time_noon)d.sh+=1;
+ if(d.light_warm)d.sn+=1;
+ if(d.light_cool)d.sf+=1;
+ if(d.light_mix)d.sh+=1;
+ if(d.exp_over)d.sn+=1;
+ if(d.exp_under)d.sf+=1;
+ if(d.exp_mixed||d.exp_std)d.sh+=1;
+ if(d.con_high)d.sf+=1;
+ if(d.con_low)d.sn+=1;
+ if(d.grain_high)d.sh+=1;
+ if(d.grain_fine)d.sn+=1;
+ const sMax=Math.max(d.sn,d.sf,d.sh);
+ const scan=sMax===0?'hasselblad':(d.sn===sMax?'noritsu':(d.sf===sMax?'fuji':'hasselblad'));
+ state.scan=scan;
+ showScanResult(state.pickedFilm,scan);
+}
+
+/* ============ Starter card ============ */
+function starDots(n){let s='';for(let i=0;i<5;i++)s+=i<n?'<span>★</span>':'<span class="e">★</span>';return s;}
+function renderStarter(fk,sk,ck,cineNote){
+ const F=FILMS[fk],S=SCANS[sk],C=CAMERAS[ck],G=guideFor(fk);
+ const total=F.usd+15;
+ const ov=document.getElementById('ov');
+ ov.hidden=false;ov.innerHTML=`<div class="starter">
+  <button class="ov-back" onclick="backToChoose()">← Back</button>
+  <div class="starter-tag">Your starter card — freshly developed</div>
+  <h2 class="starter-title">${F.name}</h2>
+  <div class="schips">${F.chips.map(c=>`<span class="schip">${c}</span>`).join('')}</div>
+  <div class="scard">
+   <div class="scard-img">
+    <span class="scanlab">${S.name} · ${S.label}</span>
+    <img src="${IMG[fk][sk]}" alt="${F.name} sample">
+   </div>
+   <div class="scard-h">
+    <p class="why">${F.tag}</p>
+    <div class="sg"><div class="lbl">Best for</div><div class="val">${F.best}</div></div>
+    <div class="sg"><div class="lbl">Difficulty</div><div class="val stars">${starDots(F.diff)}</div></div>
+    <div class="sg"><div class="lbl">Recommended camera</div><div class="val">${C.name}<br><small style="font-size:13px;color:var(--ink-soft)">${C.examples}</small><div style="font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.5">${C.desc}</div></div></div>
+    <div class="sg"><div class="lbl">Estimated total cost</div><div class="val">~$${F.usd} film + ~$15 develop &amp; scan = <b>~$${total}</b></div></div>
+    <div class="sg"><div class="lbl">Three things to remember</div>
+     <ol class="tips-ol">${G.tips.map(t=>`<li>${t}</li>`).join('')}</ol></div>
+   </div>
+  </div>
+  ${cineNote?`<div class="cine-note">${cineNote}</div>`:''}
+  <div class="scard-actions">
+   <button class="btn big" onclick="openGuide('${fk}')">Start my roll guide</button>
+   <button class="btn quiet" onclick="seeFilmStories('${fk}')">Stories on this film</button>
+   <button class="btn quiet" onclick="openDevelop()">Get it developed</button>
+   <button class="btn quiet" onclick="backToChoose()">Retake</button>
+  </div></div>`;
+ document.getElementById('ov').scrollTop=0;
+}
+function showScanResult(fk,sk){
+ const F=FILMS[fk],S=SCANS[sk];
+ const ov=document.getElementById('ov');
+ ov.hidden=false;ov.innerHTML=`<div class="starter">
+  <button class="ov-back" onclick="renderScanPre()">← Back</button>
+  <div class="starter-tag">Your scan match</div>
+  <h2 class="starter-title">${S.name}</h2>
+  <div class="schips"><span class="schip">${F.name}</span><span class="schip">${S.label}</span></div>
+  <div class="scard">
+   <div class="scard-img"><span class="scanlab">${F.name} on ${S.name}</span><img src="${IMG[fk][sk]}" alt=""></div>
+   <div class="scard-h">
+    <p class="why">Why ${S.name} fits this roll</p>
+    <p style="font-size:16px;line-height:1.6;color:var(--ink-2)">${S.desc}</p>
+    <div class="sg" style="margin-top:14px"><div class="lbl">Film tone</div><div class="val">${F.tone}</div></div>
+    <div class="sg"><div class="lbl">Grain</div><div class="val">${F.grain}</div></div>
+   </div>
+  </div>
+  <div class="scard-actions">
+   <button class="btn big" onclick="openGuide('${fk}')">Open the shoot guide</button>
+   <button class="btn quiet" onclick="seeFilmStories('${fk}')">Stories on this film</button>
+   <button class="btn quiet" onclick="openDevelop()">Get it developed</button>
+   <button class="btn quiet" onclick="renderScanPre()">Start over</button>
+  </div></div>`;
+ document.getElementById('ov').scrollTop=0;
+}
+function seeFilmStories(fk){state.filter=fk;closeOv();go('stories');}
+
+/* ============ Develop entry ============ */
+function openDevelop(){
+ state.devPath=state.devPath||'mail';
+ pushOv(renderDevelop(),'tools');
+}
+function setDevPath(p){
+ state.devPath=p;
+ const html=renderDevelop();
+ ovStack[0]=html;
+ document.getElementById('ov').innerHTML=html;
+}
+function renderDevelop(){
+ const mail=state.devPath==='mail';
+ const list=LABS.filter(l=>mail?l.mail:!l.mail);
+ return `<div style="padding:22px 0 40px">
+  <div style="padding:0 20px">
+   <button class="ov-back" onclick="closeOv()">← Back</button>
+   <div class="eyebrow">Get it developed</div>
+   <h2 style="font-family:var(--serif);font-size:33px;font-weight:500;margin:10px 0 6px">Your roll is <em>finished.</em></h2>
+   <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:20px">Mail it in for a member price, or drop it at a partner lab near you.</p>
+  </div>
+  <div class="segmented">
+   <button class="${mail?'active':''}" onclick="setDevPath('mail')">Mail-in order</button>
+   <button class="${!mail?'active':''}" onclick="setDevPath('near')">Near me</button>
+  </div>
+  ${mail?renderMail(list):renderNear(list)}
+ </div>`;
+}
+function renderMail(list){
+ return list.map(l=>{
+  const R=LAB_RATINGS[l.id];
+  return `<div class="order-card">
+   <div class="oc-top">
+    <div class="oc-letter">${l.id}</div>
+    <h4>${l.name.replace(' — mail-in','')}</h4>
+    <div class="oc-rate">★ ${R.score.toFixed(1)}</div>
+   </div>
+   <div class="oc-prices">
+    <button class="price-pill" onclick="orderLab('${l.id}',false)">
+     <div class="pl-l">Standard</div>
+     <div class="pl-v">$${l.price}</div>
+     <div class="pl-note">develop &amp; scan</div>
+    </button>
+    <button class="price-pill member ${state.member?'is-open':''}" onclick="orderLab('${l.id}',true)">
+     <div class="pl-l">${state.member?'Member price':'Member · join'}</div>
+     <div class="pl-v">$${state.member?l.mp:'<'+l.mp}</div>
+     <div class="pl-note">${state.member?'with FILM+':'tap to unlock'}</div>
+    </button>
+   </div>
+   <div class="oc-desc">Pre-paid mail-in envelope, develop &amp; high-res scan in ${l.time}. Negatives always returned.</div>
+  </div>`;
+ }).join('')+
+ (state.member?'':'<div style="padding:0 20px"><button class="btn rust btn-block" onclick="openMembership()">Get member prices — save 25%</button></div>')+
+ `<div style="padding:0 20px;margin-top:14px"><button class="link" onclick="openGlossary()">What does develop + scan mean?</button></div>`;
+}
+function renderNear(list){
+ return `<div class="map-card" aria-label="Concept map">
+  <div class="map-lines"></div>
+  <div class="pin p1"><span>A</span></div>
+  <div class="pin p2"><span>B</span></div>
+  <div class="pin p3"><span>C</span></div>
+  <div class="you">You are here</div>
+ </div>
+ <div style="padding:0 20px">
+  ${list.map(l=>{
+   const R=LAB_RATINGS[l.id];
+   return `<div class="order-card" onclick="openLabDetail('${l.id}')">
+    <div class="oc-top">
+     <div class="oc-letter">${l.id}</div>
+     <h4>${l.name}</h4>
+     <div class="oc-rate">★ ${R.score.toFixed(1)}</div>
+    </div>
+    <div class="oc-desc" style="padding-bottom:0">
+     ${l.spec} · ${l.dist} · ${l.time}
+     <br>${l.partner?`<b style="color:var(--rust)">Partner lab — $${l.pp} via FILM</b>`:`$${l.price} develop &amp; scan`}
+     ${l.rec?'<br><span style="color:var(--ink-soft)">Recommended for beginners</span>':''}
+    </div>
+    <div style="padding:14px 18px 16px;color:var(--ink-soft)">${ICON_CHEV}</div>
+   </div>`;}).join('')}
+  <div style="margin-top:4px"><button class="link" onclick="openGlossary()">Lab words in plain English</button></div>
+ </div>`;
+}
+
+/* order confirmation */
+function orderLab(id,member){
+ if(member&&!state.member){openMembership();return;}
+ const l=LABS.find(x=>x.id===id);
+ const price=member?l.mp:l.price;
+ const storage=state.member;
+ pushOv(`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="backOv()">← Back</button>
+  <div class="eyebrow">Confirm order</div>
+  <h2 style="font-family:var(--serif);font-size:31px;font-weight:500;margin:10px 0 18px">Mail-in develop &amp; scan</h2>
+  <div class="order-card" style="margin:0;cursor:default">
+   <div class="oc-top"><div class="oc-letter">${l.id}</div><h4>${l.name.replace(' — mail-in','')}</h4></div>
+   <div class="oc-desc">
+    Develop &amp; high-res scan · ${l.time}
+    <br>Price — <b style="color:var(--rust)">$${price} ${member?'(member)':''}</b>
+    <br>${storage?'Negatives stored with FILM — no return postage now.':'Negatives returned by post.'}
+   </div>
+  </div>
+  <div style="margin-top:18px"><button class="btn rust btn-block" onclick="toast('Order placed — your pre-paid envelope is on its way.');closeOv()">Place order</button></div>
+ </div>`,'tools');
+}
+
+/* ============ Lab ratings, reviews, detail ============ */
+const LAB_RATINGS={
+ A:{score:4.8,count:238},B:{score:4.6,count:154},C:{score:4.4,count:97},
+ D:{score:4.7,count:1240},E:{score:4.5,count:310}
+};
+const LAB_REVIEWS={
+ A:[
+  {a:1,n:"Olivia",r:5,t:"My first roll ever — they walked me through the whole process and the scans came back in three days. Perfect for a beginner."},
+  {a:2,n:"James",r:5,t:"Colors were exactly as described and they kept my negatives organized. I have been back four times now."},
+  {a:5,n:"Sofia",r:4,t:"Great quality and a friendly counter. I only wish the weekend hours were a little longer."}],
+ B:[
+  {a:4,n:"Ethan",r:5,t:"They do black and white in house, which is rare. The grays came out beautiful and the turnaround was honest."},
+  {a:7,n:"Ruby",r:4,t:"Solid scans, a little pricier than the chain but worth it for the care and the email updates."}],
+ C:[
+  {a:8,n:"Arjun",r:4,t:"One of the few places that handles ECN-2 and B&W. They explained every option without rushing me."},
+  {a:6,n:"Harriet",r:5,t:"They printed an old family roll and even restored a few faded frames. Genuinely kind people."}],
+ D:[
+  {a:3,n:"Zoe",r:5,t:"There is no local lab near me, so I mailed it in. The pre-paid envelope made it easy and scans arrived on day five."},
+  {a:4,n:"Ethan",r:4,t:"Consistent, national, reliable. The scan portal is simple and they always return the negatives."}],
+ E:[
+  {a:1,n:"Hana",r:5,t:"They process unusual films and clearly love film photography. The handwritten note they sent made my month."}]
+};
+function reviewStars(n){
+ let s='';
+ for(let i=1;i<=5;i++)s+=i<=Math.round(n)?'<span class="f">★</span>':'<span class="e">★</span>';
+ return s;
+}
+const MAP_LABS={A:LABS[0],B:LABS[1],C:LABS[2]};
+function showMapPin(k){
+ const l=MAP_LABS[k];if(!l)return;
+ ['A','B','C'].forEach(x=>document.getElementById('mp'+x)?.classList.remove('on'));
+ document.getElementById('mp'+k)?.classList.add('on');
+ document.getElementById('mpName').textContent=l.name;
+ document.getElementById('mpMeta').textContent=`${l.spec} · ${l.dist} · ${l.time} · ★ ${LAB_RATINGS[l.id].score.toFixed(1)}`;
+ document.getElementById('mpCta').setAttribute('onclick',`openLabDetail('${l.id}')`);
+ document.getElementById('mapPopup').classList.add('on');
+}
+function hideMapPin(){
+ document.getElementById('mapPopup').classList.remove('on');
+ ['A','B','C'].forEach(x=>document.getElementById('mp'+x)?.classList.remove('on'));
+}
+function openLabOrder(id){
+ const l=LABS.find(x=>x.id===id);
+ const normal=l.price, member=l.pp||(l.price*0.75).toFixed(0);
+ openModal(`<div class="modal-card" style="position:relative">
+  <button class="modal-x" onclick="closeModal()">×</button>
+  <div class="eyebrow">${l.name}</div>
+  <h3 style="font-family:var(--serif);font-size:26px;font-weight:500;margin:8px 0 14px">Develop + scan, one roll.</h3>
+  <div style="display:flex;gap:10px;margin-bottom:16px">
+   <div style="flex:1;background:var(--paper-2);border-radius:12px;padding:13px">
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)">Standard</div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:600;margin-top:3px">$${normal}</div>
+   </div>
+   <div style="flex:1;background:var(--ink);border-radius:12px;padding:13px;color:var(--paper-3)">
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">FILM+ member</div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:600;margin-top:3px">$${member}</div>
+    <div style="font-size:10px;opacity:.8;margin-top:2px">Save $${(normal-member).toFixed(0)} per roll</div>
+   </div>
+  </div>
+  <button class="btn rust btn-block" onclick="closeModal();openMembership()">Unlock member price</button>
+  <button class="btn ghost btn-block" style="margin-top:10px" onclick="closeModal();toast('Order placed at standard price.')">Pay standard $${normal}</button>
+ </div>`);
+}
+function openLabDetail(id){
+ const l=LABS.find(x=>x.id===id),R=LAB_RATINGS[id],revs=LAB_REVIEWS[id];
+ pushOv(`<div>
+  <div class="ld-head">
+   <button class="ov-back" onclick="backOv()">← All labs</button>
+   <h2>${l.name}</h2>
+   <div class="ld-score">${reviewStars(R.score)} <b>${R.score.toFixed(1)}</b> · ${R.count} reviews</div>
+   <div class="ld-meta">${l.spec} · ${l.time} · ${l.dist}
+    <br>${l.partner?`Partner price <b>$${l.pp}</b> via FILM · standard $${l.price}`:`$${l.price} develop &amp; scan`}</div>
+   ${l.rec?'<div class="oc-desc" style="color:var(--rust)">Recommended for beginners</div>':''}
+  </div>
+  <div class="ld-actions">
+   <button class="btn rust big" onclick="openLabOrder('${l.id}')">Order development here</button>
+  </div>
+  <div class="ld-reviews">
+   <h3>What people say <span>${revs.length}</span></h3>
+   ${revs.map(rv=>`
+    <div class="ld-review">
+     <span class="cm-av"><img src="${av(rv.a)}" alt=""></span>
+     <div style="flex:1;min-width:0">
+      <div class="rv-top"><b>${rv.n}</b>${reviewStars(rv.r)}</div>
+      <p>${rv.t}</p>
+     </div>
+    </div>`).join('')}
+   <div class="ld-photos">Customer photos are coming soon.</div>
+  </div>
+ </div>`,'tools');
+}
+
+/* ============ Glossary ============ */
+const GLOSS=[
+ ["Develop only","They process the film and return your physical negatives — no digital files. Choose this if you scan at home."],
+ ["Develop + scan","They process the film and send digital scans. The best choice for a first roll, and you keep the negatives."],
+ ["C-41","The standard process for color film. Every color film recommended here uses C-41, so almost any lab can handle it."],
+ ["Black & white","B&W film uses a different chemistry, often by hand. Turnaround is a little longer and the price slightly higher."],
+ ["ECN-2","Cine film needs ECN-2 instead of C-41. Fewer labs offer it — check before buying a cine roll."],
+ ["Scan resolution","Small or medium files are plenty for phones and screens. Ask for high resolution only if you plan to print."],
+ ["Turnaround","The time between dropping off and getting photos back — typically 3 to 7 days."],
+ ["Negatives","The original film strips, returned after processing. They are the real artifact — keep them."]
+];
+function openGlossary(){
+ pushOv(`<div style="padding:22px 0 40px">
+  <div style="padding:0 20px"><button class="ov-back" onclick="backOv()">← Back</button>
+   <div class="eyebrow">Lab words</div>
+   <h2 style="font-family:var(--serif);font-size:31px;font-weight:500;margin:10px 0 12px">In plain English.</h2></div>
+  <div class="glossary">
+   ${GLOSS.map(([t,p])=>`<details class="gloss"><summary>${t}</summary><p>${p}</p></details>`).join('')}
+  </div>
+ </div>`,'tools');
+}
+
+/* ============ FILM+ membership ============ */
+let chosenPlan='month';
+const PLANS=[
+ {id:'month',name:'Monthly',sub:'Billed every month',price:'$10',per:'/mo'},
+ {id:'quarter',name:'Quarterly',sub:'$9 per month · save 10%',price:'$27',per:'/ 3 mo'},
+ {id:'year',name:'Annual',sub:'$8 per month · save 20%',price:'$96',per:'/ year'}
+];
+function manageMember(){toast('Manage your FILM+ membership.');}
+function openMembership(){
+ chosenPlan='month';
+ openModal(`<div class="modal-card" style="position:relative">
+  <button class="modal-x" onclick="closeModal()">×</button>
+  <div class="eyebrow">FILM+ membership</div>
+  <h3 style="font-family:var(--serif);font-size:30px;font-weight:500;margin:8px 0 6px">Develop less, keep more.</h3>
+  <p style="font-size:13px;color:var(--ink-soft);line-height:1.6">One membership for the whole film journey.</p>
+  <ul class="m-perks">
+   <li>Member prices on every mail-in develop &amp; scan</li>
+   <li>We store your negatives for up to a year — no repeated return postage</li>
+   <li>Discounts at partner labs near you</li>
+  </ul>
+  <div class="m-plans">
+   ${PLANS.map(p=>`<div class="m-plan ${p.id==='month'?'sel':''}" onclick="selPlan('${p.id}')">
+    <span class="mp-radio"></span>
+    <span><div class="mp-name">${p.name}</div><div class="mp-sub">${p.sub}</div></span>
+    <span class="mp-price"><b>${p.price}</b><small>${p.per}</small></span>
+   </div>`).join('')}
+  </div>
+  <button class="btn rust btn-block" onclick="subscribe()">Start FILM+</button>
+  <button class="link btn-block" style="margin-top:13px" onclick="closeModal()">Maybe later</button>
+ </div>`);
+}
+function selPlan(id){
+ chosenPlan=id;
+ document.querySelectorAll('.m-plan').forEach(el=>el.classList.toggle('sel',el.querySelector('.mp-name').textContent===PLANS.find(p=>p.id===id).name));
+}
+function subscribe(){
+ state.member=true;
+ closeModal();
+ if(!ovStack.length){renderMe();}
+ else{
+  /* refresh develop list if it's open */
+  if(state.devPath){const h=renderDevelop();ovStack[0]=h;document.getElementById('ov').innerHTML=h;}
+ }
+ toast('Welcome to FILM+ — member prices unlocked.');
+}
+
+/* ============ Film library ============ */
+function openFilms(fam){ pushOv(renderFilms(fam),'tools'); }
+function renderFilms(fam){
+ const all=[
+  ['Warm color — Kodak',["gold200","colorplus","ultramax","proimage","portra160","portra400","portra800"],'warm'],
+  ['Cool color — Fujifilm',["fujic100","fujic200","fujic400"],'cool'],
+  ['Cinematic — motion picture',["c5203","c5207","c5213","c5219","c5294"],'cine'],
+  ['Black & white',["trix","hp5","tmax","delta"],'bw']
+ ];
+ const groups=fam?all.filter(g=>g[2]===fam):all;
+ return `<div style="padding:22px 0 40px">
+  <div style="padding:0 20px">
+   <button class="ov-back" onclick="closeOv()">← Back</button>
+   <div class="eyebrow">Film guide</div>
+   <h2 style="font-family:var(--serif);font-size:30px;font-weight:500;margin:10px 0 18px">${fam?groups[0][0]:'Nineteen films, <em>chosen honestly.</em>'}</h2>
+  </div>
+  <div class="film-list">
+   ${groups.map(([l,ks])=>`<div class="family-label" style="margin:8px 0 10px">${l}</div>`+
+    ks.map(k=>{const F=FILMS[k];return `<button class="film-row" onclick="openFilmDetail('${k}')">
+     <span class="fr-thumb"><img src="${IMG[k].pkg}" alt=""></span>
+     <span class="fr-body"><h4>${F.name}</h4>
+      <div class="fr-meta">ISO ${F.iso} · ${F.grain} · ~$${F.usd}</div></span>
+     <span class="fr-chev">${ICON_CHEV}</span>
+    </button>`;}).join('')).join('')}
+  </div>
+ </div>`;
+}
+
+/* ============ Film detail (with shoot guide) ============ */
+function storiesForFilm(k){return STORIES.filter(s=>s.film===k);}
+function openGuide(fk){openFilmDetail(fk);}
+function openFilmDetail(fk){
+ const F=FILMS[fk],G=guideFor(fk),rs=storiesForFilm(fk);
+ pushOv(`<div>
+  <div class="film-detail">
+   <button class="ov-back" onclick="backOv()">← All films</button>
+   <div class="fd-hero"><img src="${IMG[fk].pkg}" alt="${F.name}"></div>
+   <div class="fd-gallery">
+    <div class="fd-gal"><img src="${IMG[fk].noritsu}" alt=""><span>Warm · Noritsu</span></div>
+    <div class="fd-gal"><img src="${IMG[fk].fuji}" alt=""><span>Cool · Fuji</span></div>
+    <div class="fd-gal"><img src="${IMG[fk].hasselblad}" alt=""><span>True · Hasselblad</span></div>
+   </div>
+   <div class="family-label">${F.fam==='bw'?'Black & white film':F.fam==='cine'?'Cinematic film':F.fam==='cool'?'Cool color film':'Warm color film'}</div>
+   <h2 style="margin-top:8px">${F.name}</h2>
+   <div class="fd-chips">
+    <div class="fd-chip">ISO<b>${F.iso}</b></div>
+    <div class="fd-chip">Grain<b>${F.grain}</b></div>
+    <div class="fd-chip">Tone<b>${F.tone}</b></div>
+    <div class="fd-chip">Price<b>~$${F.usd}</b></div>
+    <div class="fd-chip">Difficulty<b>${'★'.repeat(F.diff)}${'☆'.repeat(5-F.diff)}</b></div>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">Character</div>
+    <p>${F.desc}</p>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">Camera settings — set ISO ${G.iso}</div>
+    <div class="setting-table">
+     <div class="st-head"><span>Scene</span><span>Shutter</span><span>Aperture</span></div>
+     ${G.settings.map(r=>`<div class="st-row"><span>${r.scene}</span><span>${r.shutter}</span><span>${r.ap}</span></div>`).join('')}
+    </div>
+    <div class="expo-line">${G.expo}</div>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">Know the light — best for ${F.name}</div>
+    <div class="scenario-grid">
+     ${G.scenarios.map(s=>`<div class="scenario">
+      <div class="sc-top"><h4>${s.n}</h4><span class="fit ${s.fit}">${s.fit==='great'?'Ideal':s.fit==='careful'?'Careful':'Avoid'}</span></div>
+      <p>${s.what}</p>
+      <p class="how">${s.how}</p>
+     </div>`).join('')}
+    </div>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">What to avoid</div>
+    <ul class="avoid-list">${G.avoid.map(a=>`<li>${a}</li>`).join('')}</ul>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">Best subjects</div>
+    <p>${G.subj}</p>
+   </div>
+   <div class="fd-sec">
+    <div class="fd-l">Roll stories on this film · ${rs.length}</div>
+    ${rs.length?`<div class="fd-story-grid">${rs.map(s=>`<button class="fd-story" onclick="openRollFromFilm(${s.id})"><img src="${cover(s)}"><figcaption>${s.title}</figcaption></button>`).join('')}</div>`
+     :'<p style="font-family:var(--serif);font-size:18px;color:var(--ink-soft)">No stories yet — shoot the first one.</p>'}
+   </div>
+   <div class="fd-sec" style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:6px">
+    <button class="btn rust" style="flex:1;min-width:140px" onclick="openDevelop()">Get it developed</button>
+    <button class="btn ghost" style="flex:1;min-width:140px" onclick="openQuiz()">Take the quiz</button>
+   </div>
+  </div>
+ </div>`,'tools');
+}
+function openRollFromFilm(id){
+ /* pop film detail then open roll, but keep films list in stack */
+ const s=STORIES.find(x=>x.id===id);
+ openRoll(id,'tools');
+}
+
+/* ============ Stories tab ============ */
+function renderStories(){
+ const el=document.getElementById('screen-stories');
+ el.innerHTML=`<div class="eyebrow" style="padding:20px 20px 0">Stories · told one roll at a time</div>
+  <h2 style="font-family:var(--serif);font-size:25px;font-weight:500;padding:6px 20px 0;line-height:1.15">The smallest story isn't a photo.<br>It's a <em>whole roll.</em></h2>
+  <div class="filters" id="filters"></div>
+  <div class="masonry" id="masonry"></div>`;
+ renderFilters();
+ renderMasonry();
+}
+function renderFilters(){
+ const films=[...new Set(STORIES.map(s=>s.film))];
+ const chips=[`<button class="fchip ${state.filter==='all'?'active':''}" onclick="setFilter('all')">All rolls</button>`]
+  .concat(films.map(k=>`<button class="fchip ${state.filter===k?'active':''}" onclick="setFilter('${k}')">${FILMS[k].name}</button>`));
+ document.getElementById('filters').innerHTML=chips.join('');
+}
+function setFilter(k){state.filter=k;renderFilters();renderMasonry();}
+function renderMasonry(){
+ const list=STORIES.filter(s=>state.filter==='all'||s.film===state.filter);
+ document.getElementById('masonry').innerHTML=list.map(s=>`
+  <div class="mcard" onclick="openRoll(${s.id})">
+   <img src="${cover(s)}" alt="${s.title}" loading="lazy">
+   <div class="mc-body">
+    <h5>${s.title}</h5>
+    <div class="mc-meta">Roll #${String(s.id).padStart(3,'0')} · ${FILMS[s.film].name}<br>${s.place} · ${s.month} · by ${s.by}</div>
+    <div class="mc-eg">
+     <button class="${s.liked?'on':''}" onclick="toggleLike(${s.id},event)">${ICON_HEART}${s.likes}</button>
+     <button onclick="event.stopPropagation();openRoll(${s.id})">${ICON_CMT}${s.comments.length}</button>
+     <button onclick="shareStory(${s.id},event)">${ICON_SHR}${s.shares}</button>
+    </div>
+   </div>
+  </div>`).join('');
+}
+
+/* ============ Roll detail ============ */
+function boxFor(fk){
+ const F=FILMS[fk];
+ const KODAK_RED='#e11d2e';
+ const iso=(''+F.iso).replace(/^.*/,'')||F.iso;
+ const spec=`<small>36 EXP</small><br>${F.iso}`;
+ const Y={top:'linear-gradient(180deg,#ffd42c,#ffb617)',bc:KODAK_RED};
+ const b={
+  gold200:{...Y,low:'linear-gradient(180deg,#ef2f97,#d81083)',brand:'Kodak',product:'Gold',pc:'#fff',sub:'FILM FOR COLOR PRINTS'},
+  colorplus:{...Y,low:'linear-gradient(180deg,#ef6d24,#d8441a)',brand:'Kodak',product:'ColorPlus',pc:'#fff',sub:'COLOR NEGATIVE FILM'},
+  ultramax:{...Y,low:'linear-gradient(180deg,#d8203c,#b81028)',brand:'Kodak',product:'UltraMax',pc:'#fff',sub:'COLOR NEGATIVE FILM'},
+  proimage:{...Y,low:'linear-gradient(180deg,#d8203c,#b81028)',brand:'Kodak',product:'Pro Image',pc:'#fff',sub:'PEOPLE & EVERYDAY'},
+  portra160:{top:'linear-gradient(180deg,#f3efe5,#e8e2d3)',bc:KODAK_RED,low:'linear-gradient(180deg,#2c2924,#191714)',brand:'Kodak',product:'Portra',pc:'#caa866',sub:'PROFESSIONAL · PORTRAIT'},
+  portra400:{top:'linear-gradient(180deg,#f3efe5,#e8e2d3)',bc:KODAK_RED,low:'linear-gradient(180deg,#2c2924,#191714)',brand:'Kodak',product:'Portra',pc:'#caa866',sub:'PROFESSIONAL · PORTRAIT'},
+  portra800:{top:'linear-gradient(180deg,#f3efe5,#e8e2d3)',bc:KODAK_RED,low:'linear-gradient(180deg,#2c2924,#191714)',brand:'Kodak',product:'Portra',pc:'#caa866',sub:'PROFESSIONAL · PORTRAIT'},
+  trix:{top:'linear-gradient(180deg,#1f1f22,#141416)',bc:'#f5c51a',low:'linear-gradient(180deg,#19191b,#0c0c0e)',brand:'Kodak',product:'Tri-X',pc:'#f5c51a',sub:'BLACK & WHITE NEGATIVE'},
+  tmax:{top:'linear-gradient(180deg,#1f1f22,#141416)',bc:'#f5c51a',low:'linear-gradient(180deg,#19191b,#0c0c0e)',brand:'Kodak',product:'T-Max',pc:'#f5c51a',sub:'BLACK & WHITE NEGATIVE'},
+  fujic100:{top:'linear-gradient(180deg,#f6f6f0,#e9e9e0)',bc:'#c8102e',low:'linear-gradient(180deg,#248a47,#15702f)',brand:'Fujifilm',product:'Fujicolor',pc:'#fff',sub:'COLOR NEGATIVE FILM'},
+  fujic200:{top:'linear-gradient(180deg,#f6f6f0,#e9e9e0)',bc:'#c8102e',low:'linear-gradient(180deg,#248a47,#15702f)',brand:'Fujifilm',product:'Fujicolor',pc:'#fff',sub:'COLOR NEGATIVE FILM'},
+  fujic400:{top:'linear-gradient(180deg,#f6f6f0,#e9e9e0)',bc:'#c8102e',low:'linear-gradient(180deg,#248a47,#15702f)',brand:'Fujifilm',product:'Fujicolor',pc:'#fff',sub:'COLOR NEGATIVE FILM'},
+  hp5:{top:'linear-gradient(180deg,#f4f3ee,#e6e4db)',bc:'#e01b2e',low:'linear-gradient(180deg,#232323,#111)',brand:'Ilford',product:'HP5',pc:'#fff',sub:'BLACK & WHITE NEGATIVE'},
+  delta:{top:'linear-gradient(180deg,#f4f3ee,#e6e4db)',bc:'#e01b2e',low:'linear-gradient(180deg,#232323,#111)',brand:'Ilford',product:'Delta',pc:'#fff',sub:'BLACK & WHITE NEGATIVE'},
+  c5203:{top:'linear-gradient(180deg,#1c1c1e,#101012)',bc:'#f5c51a',low:'linear-gradient(180deg,#161618,#0c0c0e)',brand:'Kodak',product:'Vision',pc:'#f5c51a',sub:'MOTION PICTURE FILM'},
+  c5207:{top:'linear-gradient(180deg,#1c1c1e,#101012)',bc:'#f5c51a',low:'linear-gradient(180deg,#161618,#0c0c0e)',brand:'Kodak',product:'Vision',pc:'#f5c51a',sub:'MOTION PICTURE FILM'},
+  c5213:{top:'linear-gradient(180deg,#1c1c1e,#101012)',bc:'#f5c51a',low:'linear-gradient(180deg,#161618,#0c0c0e)',brand:'Kodak',product:'Vision',pc:'#f5c51a',sub:'MOTION PICTURE FILM'},
+  c5219:{top:'linear-gradient(180deg,#1c1c1e,#101012)',bc:'#f5c51a',low:'linear-gradient(180deg,#161618,#0c0c0e)',brand:'Kodak',product:'Vision',pc:'#f5c51a',sub:'MOTION PICTURE FILM'},
+  c5294:{top:'linear-gradient(180deg,#1c1c1e,#101012)',bc:'#f5c51a',low:'linear-gradient(180deg,#161618,#0c0c0e)',brand:'Kodak',product:'Vision',pc:'#f5c51a',sub:'MOTION PICTURE FILM'}
+ };
+ const o=Object.assign({spec},b[fk]||{...Y,low:'#222',brand:'Kodak',product:'Film',pc:'#fff',sub:'COLOR NEGATIVE FILM'});
+ const monoBW=['trix','tmax','hp5','delta'];
+ const cine=['c5203','c5207','c5213','c5219','c5294'];
+ o.bandBg = cine.includes(fk)?'#16161a' : fk.startsWith('fujic')?'#16713a' : monoBW.includes(fk)?'#26262a' : '#f2c117';
+ o.bandTc = (cine.includes(fk)||monoBW.includes(fk))?'#e9e2cf' : '#161410';
+ o.bandText = (o.product+' '+F.iso).toUpperCase();
+ return o;
+}
+function renderFilmStrip(s){
+ const b=boxFor(s.film);
+ const cells=s.frames.map(fr=>{
+  const num=String(fr.n).padStart(2,'0');
+  if(fr.ruined){
+   return `<div class="ff-cell">
+    <div class="ff-cellnum">${num} · blank</div>
+    <div class="ff-frame ruined">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>
+     <span>Film didn't hold it</span>
+    </div>
+    <div class="ff-note"><b>I thought:</b> “${fr.note}”</div>
+    <div class="ff-cap">${fr.cap}</div>
+   </div>`;
+  }
+  return `<div class="ff-cell">
+   <div class="ff-cellnum">Frame ${num}</div>
+   <div class="ff-frame"><img src="${fr.img}" alt="Frame ${fr.n}" loading="lazy"></div>
+   <div class="ff-note"><b>I thought:</b> “${fr.note}”</div>
+   <div class="ff-cap">${fr.cap}</div>
+  </div>`;
+ }).join('');
+ const label=(SHORT[s.film]||FILMS[s.film].name).replace(/·.*/,'').slice(0,16);
+ return `<div class="filmstrip-zone">
+  <div class="fs-zone-head"><span class="t">Pull the roll out.</span><span class="h">${s.exp} exposures · one story</span></div>
+  <div class="filmstrip">
+   <div class="darkbox"><div class="db">
+    <div class="db-hub"></div>
+    <div class="db-ring"></div>
+    <div class="db-body">
+     <div class="db-band" style="background:${b.bandBg};color:${b.bandTc}">${b.bandText}</div>
+     <div class="db-dx"></div>
+     <div class="db-slit"></div>
+    </div>
+    <div class="db-base"></div>
+   </div></div>
+   <div class="ffilm-scroll">
+    <div class="ffilm">
+     <div class="ff-sprocket"></div>
+     <div class="ff-track">${cells}</div>
+     <div class="ff-sprocket"></div>
+    </div>
+   </div>
+  </div>
+  <div class="fs-hint">Swipe to pull the film out</div>
+ </div>`;
+}
+function openRoll(id){
+ const s=STORIES.find(x=>x.id===id);if(!s)return;
+ const F=FILMS[s.film];
+ const scanName={warm:"Noritsu · warm scan",cool:"Fuji Frontier · cool scan",bw:"Hasselblad Flextight · true scan",cine:"Hasselblad Flextight · true scan"}[F.fam];
+ const ava=av((id%8)+1);
+ pushOv(`<div class="roll-head">
+  <button class="ov-back" onclick="backOv()">← Back</button>
+  <div class="eyebrow">Roll #${String(s.id).padStart(3,'0')} · ${s.place} · ${s.month}</div>
+  <h2>${s.title}</h2>
+  <div class="roll-author">
+   <img src="${ava}" alt="${s.by}">
+   <div><div class="ra-name">${s.by}</div><div class="ra-sub">Shot on ${F.name}</div></div>
+  </div>
+  <div class="roll-meta">
+   <span class="rm">Film <b>${SHORT[s.film]||F.name}</b></span>
+   <span class="rm">Scanned <b>${scanName}</b></span>
+   <span class="rm"><b>${s.exp}</b> exposures</span>
+  </div>
+  <div class="roll-layers">
+   <span class="thought"><i></i>I thought — the note at the shutter</span>
+   <span class="stayed"><i></i>The film kept — the photo back</span>
+  </div>
+  ${renderFilmStrip(s)}
+  <div class="engage">
+   <button class="eg ${s.liked?'on':''}" onclick="toggleLike(${s.id},event)">${ICON_HEART}<span>${s.likes}</span></button>
+   <button class="eg" id="cmt-toggle" onclick="toggleComments(${s.id},event)">${ICON_CMT}<span>${s.comments.length}</span></button>
+   <button class="eg" onclick="shareStory(${s.id},event)">${ICON_SHR}<span>${s.shares}</span></button>
+  </div>
+  <div id="comments-block" style="display:none">
+   <div class="comments" style="margin-top:0">
+    <div class="cm-head"><span>Comments <span class="cm-count">${s.comments.length}</span></span>
+     <button class="link" onclick="toggleComments(${s.id})">Close</button></div>
+    <div class="cm-list" id="cm-list">${renderComments(s)}</div>
+    <div class="cm-add">
+     <span class="cm-av"><img src="${state.user?state.user.avatar:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BYlDb2Ptpooc1AxTS8QckDienSd'}" alt="You"></span>
+     <input id="cm-input" placeholder="Add a comment..." onkeydown="if(event.key==='Enter')addComment(${s.id},this)">
+     <button class="btn" onclick="addComment(${s.id},document.getElementById('cm-input'))">Post</button>
+    </div>
+   </div>
+  </div>
+  <div class="roll-end">
+   <div class="e">— The end of this roll —</div>
+   <div class="re">
+    <button class="btn ghost" onclick="openQuiz()">Find my first roll</button>
+    <button class="btn quiet" onclick="openDevelop()">Get it developed</button>
+   </div>
+  </div>
+ </div>`,'stories');
+}
+function renderComments(s){
+ if(!s.comments.length)return '<div class="cm-none">No comments yet — say something kind.</div>';
+ return s.comments.map(c=>`<div class="cm">
+  <span class="cm-av"><img src="${c.avatar}" alt=""></span>
+  <div class="cm-b"><b>${c.name}</b>${c.text}</div>
+ </div>`).join('');
+}
+function toggleLike(id,ev){
+ if(ev)ev.stopPropagation();
+ const s=STORIES.find(x=>x.id===id);
+ s.liked=!s.liked;s.likes+=s.liked?1:-1;
+ updateEg(id);
+ if(s.liked)toast('You liked this roll.');
+}
+function shareStory(id,ev){
+ if(ev)ev.stopPropagation();
+ openShareSheet(id);
+}
+const SUG_FRIENDS=[
+ {a:1,n:"Zoe",s:"Lives in Brooklyn · shoots Portra"},
+ {a:2,n:"Ethan",s:"Your lab mate · Tri-X only"},
+ {a:3,n:"Ruby",s:"Met on the ferry · Gold 200"},
+ {a:4,n:"Joon",s:"Roommate · loves Fuji"},
+ {a:5,n:"Arjun",s:"Camera shop regular"}];
+function openSheet(html){
+ document.getElementById('sheet-body').innerHTML=html;
+ document.getElementById('sheet-mask').classList.add('open');
+ document.getElementById('sheet').classList.add('open');
+}
+function closeSheet(){
+ document.getElementById('sheet-mask').classList.remove('open');
+ document.getElementById('sheet').classList.remove('open');
+}
+function openShareSheet(id){
+ const s=STORIES.find(x=>x.id===id);
+ const fr=cover(s);
+ const friendRows=SUG_FRIENDS.map(f=>`
+  <div class="share-opt" onclick="doShare(${id},'${f.n}')">
+   <div class="so-ic"><img src="${av(f.a)}" alt=""></div>
+   <div class="so-t"><b>${f.n}</b><small>${f.s}</small></div>
+  </div>`).join('');
+ openSheet(`
+  <h3>Share “${s.title}”</h3>
+  <div class="share-opt" onclick="doCopyLink(${id})">
+   <div class="so-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="19" height="19"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></div>
+   <div class="so-t"><b>Copy link</b><small>Anyone can open this roll</small></div>
+  </div>
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:16px 4px 4px">Send to a friend</div>
+  ${friendRows}`);
+}
+function doCopyLink(id){
+ const s=STORIES.find(x=>x.id===id);s.shares+=1;updateEg(id);
+ closeSheet();toast('Link copied — paste it anywhere.');
+}
+function doShare(id,name){
+ const s=STORIES.find(x=>x.id===id);s.shares+=1;updateEg(id);
+ closeSheet();toast(`Roll sent to ${name}.`);
+}
+function openNotifs(){
+ const d=document.querySelector('.h-dot');if(d)d.style.display='none';
+ openSheet(`<h3>Notifications</h3>
+  <div class="notif"><div class="n-av"><img src="${av(1)}"></div>
+   <div class="n-body"><b>Zoe</b> liked your roll <b>“Her first roll, the long way home.”</b><span class="n-time">2h ago</span></div></div>
+  <div class="notif"><div class="n-av"><img src="${av(3)}"></div>
+   <div class="n-body"><b>Ruby</b> commented: <i>“The light on the floor in frame 1 — that is the whole thing.”</i><span class="n-time">5h ago</span></div></div>
+  <div class="notif"><div class="n-av"><img src="${av(5)}"></div>
+   <div class="n-body"><b>Arjun</b> started following you. He shoots 5219 at night.<span class="n-time">Yesterday</span></div></div>
+  <div class="notif"><div class="n-av"><img src="${av(2)}"></div>
+   <div class="n-body"><b>Ethan</b> liked your comment on <b>“Grandma’s hands at the sink.”</b><span class="n-time">Yesterday</span></div></div>
+  <div class="notif"><div class="n-av"><img src="${av(4)}"></div>
+   <div class="n-body"><b>Joon</b> shared your roll <b>“The dorm before I unpacked.”</b> with 2 friends.<span class="n-time">2d ago</span></div></div>`);
+}
+function updateEg(id){
+ const s=STORIES.find(x=>x.id===id);
+ document.querySelectorAll(`[onclick*="toggleLike(${id}"]`).forEach(()=>{});
+ /* update feed cards */
+ if(state.tab==='stories')renderMasonry();
+ /* update roll detail if open */
+ const t=document.getElementById('cmt-toggle');
+ if(t){
+  const egBtns=document.querySelectorAll('.engage .eg');
+  if(egBtns.length===3){
+   egBtns[0].classList.toggle('on',s.liked);
+   egBtns[0].querySelector('span').textContent=s.likes;
+   egBtns[1].querySelector('span').textContent=s.comments.length;
+   egBtns[2].querySelector('span').textContent=s.shares;
+  }
+ }
+}
+function toggleComments(id,ev){
+ if(ev)ev.stopPropagation();
+ const b=document.getElementById('comments-block');if(!b)return;
+ const open=b.style.display==='none';
+ b.style.display=open?'block':'none';
+ const t=document.getElementById('cmt-toggle');if(t)t.classList.toggle('on',open);
+ if(open)setTimeout(()=>{b.scrollIntoView({block:'center'});const i=document.getElementById('cm-input');if(i)i.focus();},120);
+}
+function addComment(id,input){
+ const text=(input.value||'').trim();if(!text)return;
+ const s=STORIES.find(x=>x.id===id);
+ s.comments.push({name:state.user?state.user.name:'You',avatar:state.user?state.user.avatar:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BYlDb2Ptpooc1AxTS8QckDienSd',text});
+ document.getElementById('cm-list').innerHTML=renderComments(s);
+ document.querySelector('.cm-count').textContent=s.comments.length;
+ const t=document.getElementById('cmt-toggle');if(t)t.querySelector('span').textContent=s.comments.length;
+ input.value='';
+ toast('Comment posted.');
+}
+
+/* ============ Create a roll story ============ */
+function openCreate(){
+ ovStack.length=0;
+ if(!state.create){
+  state.create={film:state.film||'gold200',place:'',title:'',
+   month:'October 2026',
+   frames:[
+    {img:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QGMebhHa0o7OXuxU6V3cMlUqnGg',cap:'The first quiet moment of the roll.'},
+    {img:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JT1ZbmiM9oQki7xNEm3cOSNOnEc',cap:'The frame I want to keep the longest.'}
+   ]};
+ }
+ const html=renderCreate();
+ const ov=document.getElementById('ov');
+ ov.hidden=false;ov.innerHTML=html;ovStack.push(html);
+ document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
+ ov.scrollTop=0;setNavVisible(false);
+}
+function renderCreate(){
+ const c=state.create;
+ const filmOpts=FILM_KEYS.map(k=>`<option value="${k}" ${c.film===k?'selected':''}>${FILMS[k].name}</option>`).join('');
+ return `<div class="create">
+  <button class="ov-back" onclick="closeOv()">Cancel</button>
+  <div class="eyebrow">Share the roll</div>
+  <h2 style="font-family:var(--serif);font-size:31px;font-weight:500;margin:10px 0 18px">Give your thirty-six frames <em>a story.</em></h2>
+
+  <div class="c-field">
+   <label>Frames — one photo and one sentence each</label>
+   ${c.frames.map((fr,i)=>`<div class="c-frame-row" style="display:flex;gap:11px;align-items:center;margin-bottom:10px">
+    <div style="flex:0 0 72px;width:72px;height:72px;border-radius:11px;overflow:hidden"><img src="${fr.img}" style="width:100%;height:100%;object-fit:cover"></div>
+    <input value="${fr.cap.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" placeholder="Frame ${String(i+1).padStart(2,'0')} — what happens?"
+     onchange="state.create.frames[${i}].cap=this.value" style="flex:1;min-width:0;border:1px solid var(--line-2);border-radius:11px;background:var(--paper-3);padding:12px;font-size:13px">
+    <button onclick="removeCreateFrame(${i})" style="background:none;border:none;color:var(--rust);cursor:pointer">✕</button>
+   </div>`).join('')}
+   ${c.frames.length<8?`<label class="c-addframe btn-block" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border:1px dashed var(--line-2);border-radius:12px;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)">
+    Add a frame<input type="file" accept="image/*" style="display:none" onchange="addCreateFrame(this)"></label>`:''}
+  </div>
+
+  <div class="c-field">
+   <label>Name this roll</label>
+   <input value="${c.title}" placeholder="e.g. My first month living alone." onchange="state.create.title=this.value">
+  </div>
+  <div class="c-grid">
+   <div class="c-field">
+    <label>Your film</label>
+    <select onchange="state.create.film=this.value">${filmOpts}</select>
+   </div>
+   <div class="c-field">
+    <label>When</label>
+    <input value="${c.month}" onchange="state.create.month=this.value">
+   </div>
+  </div>
+  <div class="c-field">
+   <label>Place</label>
+   <input value="${c.place}" placeholder="e.g. Pittsburgh" onchange="state.create.place=this.value">
+  </div>
+  <div class="c-actions">
+   <button class="btn quiet" onclick="closeOv()">Cancel</button>
+   <button class="btn rust big" onclick="publishCreate()">Publish the roll</button>
+  </div>
+ </div>`;
+}
+function removeCreateFrame(i){state.create.frames.splice(i,1);refreshCreate();}
+function addCreateFrame(input){
+ const f=input.files&&input.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=e=>{
+  if(state.create.frames.length>=8){toast('Share up to 8 frames — the rest stay private.');}
+  else{state.create.frames.push({img:e.target.result,cap:''});refreshCreate();}
+ };
+ rd.readAsDataURL(f);input.value='';
+}
+function refreshCreate(){
+ const html=renderCreate();
+ ovStack[ovStack.length-1]=html;
+ document.getElementById('ov').innerHTML=html;
+}
+function publishCreate(){
+ const c=state.create;
+ if(!c.place){toast('Add the place first.');return;}
+ if(!c.title){toast('Give your roll a title.');return;}
+ if(!c.frames.length){toast('Add at least one frame.');return;}
+ c.frames.forEach((fr,i)=>{if(!fr.cap)fr.cap='Frame '+(i+1)+'.';});
+ let id=Math.max(...STORIES.map(s=>Number(s.id)))+1;
+ const s={id,film:c.film,place:c.place,month:c.month,by:state.user?state.user.name:'You',
+  exp:36,dev:c.frames.length,shared:c.frames.length,title:c.title,
+  frames:c.frames.map((fr,i)=>({n:i+1,img:fr.img,note:fr.cap,cap:fr.cap})),
+  likes:0,shares:0,liked:false,comments:[]};
+ STORIES.push(s);
+ state.create=null;
+ closeOv();
+ state.filter='all';
+ go('stories');
+ setTimeout(()=>openRoll(id),120);
+ toast('Your roll is published.');
+}
+
+/* ============ Tools tab ============ */
+function renderTools(){
+ const el=document.getElementById('screen-tools');
+ const t=state.toolsTab||'find';
+ const cat=(fam)=>FILM_KEYS.filter(k=>FILMS[k].fam===fam);
+ const famImg={warm:IMG.gold200.noritsu,cool:IMG.fujic200.fuji,cine:IMG.c5219.noritsu,bw:IMG.trix.noritsu};
+ const famName={warm:"Warm & golden",cool:"Cool & airy",cine:"Cinematic",bw:"Black & white"};
+ el.innerHTML=`<div class="eyebrow" style="padding:22px 20px 0">Tools</div>
+  <h2 style="font-family:var(--serif);font-size:25px;font-weight:500;padding:6px 20px 0;line-height:1.15">For whatever you're <em>shooting.</em></h2>
+  <div class="tool-tabs">
+   <button class="${t==='find'?'on':''}" onclick="setToolsTab('find')">Find film</button>
+   <button class="${t==='develop'?'on':''}" onclick="setToolsTab('develop')">Develop</button>
+   <button class="${t==='guide'?'on':''}" onclick="setToolsTab('guide')">Film guide</button>
+  </div>
+  <div style="padding:8px 20px 40px">
+   ${t==='find'?`
+    <div class="tool-hero" onclick="openQuiz()">
+     <img src="${IMG.portra400.noritsu}" alt="">
+     <div class="th-shade"></div>
+     <div class="th-body">
+      <div class="th-tag">Quiz · 13 questions</div>
+      <h4>Not sure which roll to buy?</h4>
+      <p>Answer a few things about the light you love — we match a film, scan, and camera.</p>
+     </div>
+    </div>
+    <div class="sec-head" style="margin-bottom:10px"><h3>Browse by mood</h3></div>
+    <div class="cat-grid">
+     ${['warm','cool','cine','bw'].map(f=>`
+      <div class="cat-card" onclick="openFilms('${f}')">
+       <img src="${famImg[f]}" alt=""><div class="cc-shade"></div>
+       <div class="cc-body"><b>${famName[f]}</b><small>${cat(f).length} rolls</small></div>
+      </div>`).join('')}
+    </div>
+    <button class="btn ghost btn-block" style="margin-top:14px" onclick="openFilms()">See all 19 films</button>`:''}
+   ${t==='develop'?`
+    <div class="tool-hero" onclick="state.devPath='mail';openDevelop()">
+     <img src="${IMG.ultramax.noritsu}" alt="">
+     <div class="th-shade"></div>
+     <div class="th-body">
+      <div class="th-tag">Mail-in</div>
+      <h4>Send it in, get scans back.</h4>
+      <p>Pre-paid envelope, your negatives always returned.</p>
+     </div>
+    </div>
+    <div class="sec-head" style="margin:6px 0 10px"><h3>Near you</h3><span class="see" onclick="state.devPath='near';openDevelop()">All</span></div>
+    ${LABS.filter(l=>!l.mail).slice(0,4).map(l=>`
+     <div class="recrow" onclick="openLabDetail('${l.id}')" style="cursor:pointer;margin-bottom:9px">
+      <div class="rc-thumb" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--paper-2);font-family:var(--serif);font-size:17px;font-weight:600;color:var(--rust)">${l.id}</div>
+      <div class="rc-body">
+       <div class="rc-meta">${l.spec} · ${l.dist}</div>
+       <h5 style="font-size:15px">${l.name}</h5>
+       <div class="rc-sub">${l.time} · ★ ${LAB_RATINGS[l.id].score.toFixed(1)}</div>
+      </div>
+     </div>`).join('')}
+    <div class="sec-head" style="margin:16px 0 10px"><h3>Mail-in labs</h3></div>
+    ${LABS.filter(l=>l.mail).slice(0,2).map(l=>`
+     <div class="recrow" onclick="openLabDetail('${l.id}')" style="cursor:pointer;margin-bottom:9px">
+      <div class="rc-thumb" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--paper-2);font-family:var(--serif);font-size:17px;font-weight:600;color:var(--rust)">${l.id}</div>
+      <div class="rc-body">
+       <div class="rc-meta">${l.spec} · mail</div>
+       <h5 style="font-size:15px">${l.name}</h5>
+       <div class="rc-sub">${l.time} · ★ ${LAB_RATINGS[l.id].score.toFixed(1)}</div>
+      </div>
+     </div>`).join('')}`:''}
+   ${t==='guide'?`
+    <div class="tool-hero" onclick="openGuide('${state.film||'gold200'}')">
+     <img src="${IMG.trix.noritsu}" alt="">
+     <div class="th-shade"></div>
+     <div class="th-body">
+      <div class="th-tag">Shooting guide</div>
+      <h4>Set your ISO, then read the light.</h4>
+      <p>Camera settings, scenarios, and what to avoid — for your film.</p>
+     </div>
+    </div>
+    <div class="sec-head" style="margin:6px 0 10px"><h3>Browse by type</h3></div>
+    <div class="cat-grid" style="gap:9px">
+     ${[
+      ['Kodak color',IMG.gold200.noritsu,'7 rolls · warm','warm'],
+      ['Fuji color',IMG.fujic200.fuji,'3 rolls · cool','cool'],
+      ['Cine film',IMG.c5219.noritsu,'5 rolls · cinematic','cine'],
+      ['Black & white',IMG.trix.noritsu,'4 rolls · true','bw'],
+     ].map(([k,im,d,fam])=>`
+      <div class="cat-card" style="height:92px" onclick="openFilms('${fam}')">
+       <img src="${im}" alt=""><div class="cc-shade"></div>
+       <div class="cc-body"><b style="font-size:13px">${k}</b><small style="font-size:7px">${d}</small></div>
+      </div>`).join('')}
+    </div>
+    <button class="btn ghost btn-block" style="margin-top:12px" onclick="openFilms()">See all 19 films</button>`:''}
+  </div>`;
+}
+function setToolsTab(t){state.toolsTab=t;renderTools();}
+
+/* ============ Home ============ */
+function renderHome(){
+ const el=document.getElementById('screen-home');
+ const popular=STORIES.slice(0,7);
+ el.innerHTML=`<div class="cover">
+   <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Yd9ObmbZBow3fdxOYrScpLORnVc" alt="The bus home at dusk">
+   <div class="cover-shade"></div>
+   <div class="cover-copy">
+    <div class="cover-kicker">Your first roll starts here</div>
+    <h1>Slow down.<br><em>Keep the light.</em></h1>
+    <p>Find the film that fits your life, learn as you shoot, then tell the story of the whole roll.</p>
+    <div class="cover-actions">
+     <button class="btn light big" onclick="go('stories')">Explore stories</button>
+     <button class="btn dark big" onclick="openQuiz()">Find your film</button>
+    </div>
+   </div>
+   <div class="cover-fade"></div>
+  </div>
+
+  <div class="section" style="padding-top:24px">
+   <div class="sec-head"><h3>Popular rolls</h3><span class="see" onclick="go('stories')">See all</span></div>
+  </div>
+  <div class="hscroll">
+   ${popular.map(s=>`<div class="hcard" onclick="openRoll(${s.id})">
+    <div class="hc-img"><img src="${cover(s)}" alt="">
+     <span class="hc-badge">${FILMS[s.film].fam==='bw'?'B&W · ':''}${SHORT[s.film]}</span></div>
+    <h5>${s.title}</h5>
+    <small>${FILMS[s.film].name} · ${s.place}</small>
+   </div>`).join('')}
+  </div>
+
+  <div class="section" style="padding-top:22px">
+   <div class="sec-head"><h3>Recommended for you</h3><span class="see" onclick="go('stories')">More</span></div>
+  </div>
+  ${STORIES.slice(1,5).map(s=>`<div class="recrow" onclick="openRoll(${s.id})">
+    <div class="rc-thumb"><img src="${cover(s)}" alt=""></div>
+    <div class="rc-body">
+     <div class="rc-meta">${FILMS[s.film].name} · ${s.place}</div>
+     <h5>${s.title}</h5>
+     <div class="rc-sub">by ${s.by} · ${s.month}</div>
+    </div>
+  </div>`).join('')}
+
+  <div class="section" style="padding-top:22px">
+   <div class="sec-head"><h3>Personalize your roll</h3></div>
+  </div>
+  <div class="pill" onclick="openQuiz()">
+   <div class="pill-ic">🎞</div>
+   <span>What kind of moments are you shooting?</span>
+   <span class="chev">›</span>
+  </div>
+
+  <div class="hair"></div>
+
+  <div class="section" style="padding-top:18px">
+   <div class="sec-head"><h3>Develop near you</h3><span class="see" onclick="openDevelop()">All labs</span></div>
+  </div>
+  <div style="padding:0 20px">
+   <div class="map-card" style="margin-bottom:12px">
+    <div class="park"></div>
+    <div class="river"></div>
+    <div class="bld" style="left:38%;top:10%;width:14%;height:12%"></div>
+    <div class="bld" style="left:55%;top:8%;width:18%;height:14%"></div>
+    <div class="bld" style="left:78%;top:12%;width:14%;height:10%"></div>
+    <div class="bld" style="left:38%;top:70%;width:12%;height:14%"></div>
+    <div class="bld" style="left:70%;top:72%;width:16%;height:14%"></div>
+    <div class="bld" style="left:8%;top:72%;width:14%;height:12%"></div>
+    <div class="st v thick" style="left:36%"></div>
+    <div class="st v" style="left:60%"></div>
+    <div class="st v thick" style="right:14%"></div>
+    <div class="st h thick" style="top:28%"></div>
+    <div class="st h" style="top:68%"></div>
+    <span class="road-label" style="left:38%;top:26%">Oak St</span>
+    <span class="road-label" style="left:62%;top:66%">River Rd</span>
+    <span class="road-label" style="left:6%;top:48%">5th Ave</span>
+    <span class="poi" style="left:42%;top:13%">Cafe Lumen</span>
+    <span class="poi" style="left:72%;top:74%">Laundromat</span>
+    <div class="pin" id="mpA" style="left:22%;top:30%" onclick="showMapPin('A')"><span>A</span></div>
+    <div class="pin" id="mpB" style="right:16%;top:56%" onclick="showMapPin('B')"><span>B</span></div>
+    <div class="pin" id="mpC" style="left:52%;bottom:16%" onclick="showMapPin('C')"><span>C</span></div>
+    <div class="you"></div>
+    <div class="map-popup" id="mapPopup">
+     <div class="mp-row"><b id="mpName"></b><span class="mp-x" onclick="hideMapPin()">✕</span></div>
+     <small id="mpMeta"></small><br>
+     <span class="mp-cta" id="mpCta" onclick="openLabDetail('A')">Details</span>
+    </div>
+   </div>
+   <p style="text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px">Tap a pin to see the lab</p>
+  </div>
+
+  <div class="section" style="padding-top:22px">
+   <div class="sec-head"><h3>Explore by tool</h3></div>
+  </div>
+  <div class="chips">
+   <div class="chip" onclick="openQuiz()"><div class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div><small>Find film</small></div>
+   <div class="chip" onclick="openDevelop()"><div class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg></div><small>Develop</small></div>
+   <div class="chip" onclick="openFilms()"><div class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><small>Film guide</small></div>
+  </div>
+
+  <div class="hair"></div>
+
+  <div style="text-align:center;padding:24px 20px 10px;font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)">
+   We don't take photos. We just lend a little light to the future.</div>`;
+}
+
+/* ============ Profile (Me) ============ */
+const DEMO_USER={name:'Maya Lin',handle:'@maya.film',avatar:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BYlDb2Ptpooc1AxTS8QckDienSd',email:'maya@example.com',
+ bio:'First month living alone. Learning the city one roll at a time.'};
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MY_ROLLS=[{id:34,mi:0},{id:25,mi:2},{id:18,mi:5},{id:9,mi:7},{id:21,mi:8},{id:14,mi:9},{id:7,mi:10}]
+ .map(({id,mi})=>{const s=STORIES.find(x=>x.id===id);return{id,mi,film:s.film,title:s.title,img:cover(s)};});
+let _actx=null;
+function ensureAudio(){try{_actx=_actx||new (window.AudioContext||window.webkitAudioContext)();if(_actx.state==='suspended')_actx.resume();}catch(e){}}
+function tickSound(){try{ensureAudio();if(!_actx)return;const t=_actx.currentTime;const o=_actx.createOscillator();const g=_actx.createGain();
+ o.type='square';o.frequency.setValueAtTime(1800,t);o.frequency.exponentialRampToValueAtTime(820,t+0.025);
+ g.gain.setValueAtTime(0.05,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);
+ o.connect(g);g.connect(_actx.destination);o.start(t);o.stop(t+0.05);}catch(e){}}
+function buildRotorSvg(pos){
+ const cx=170,cy=160,R=130,has={};MY_ROLLS.forEach(r=>has[r.mi]=true);
+ const pt=(i,r)=>{const a=(180-i*(180/11))*Math.PI/180;return[cx+r*Math.cos(a),cy-r*Math.sin(a)];};
+ let ticks='',labels='';
+ for(let i=0;i<12;i++){
+  const[x1,y1]=pt(i,R-2),[x2,y2]=pt(i,R-13),[lx,ly]=pt(i,R-30);
+  ticks+=`<line class="tick" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+  if(has[i])ticks+=`<circle class="tickdot" cx="${x1.toFixed(1)}" cy="${y1.toFixed(1)}" r="2.5"/>`;
+  labels+=`<text class="mlab" x="${lx.toFixed(1)}" y="${(ly+3).toFixed(1)}">${MONTHS[i][0]}</text>`;
+ }
+ const[ex,ey]=pt(pos,R-2);
+ return `<svg class="rotor" viewBox="0 0 340 180">
+  <path class="arctrack" d="M ${cx-R} ${cy} A ${R} ${R} 0 0 1 ${cx+R} ${cy}"/>
+  ${ticks}${labels}
+  <line class="needle" x1="${cx}" y1="${cy}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}"/>
+  <circle class="hub" cx="${cx}" cy="${cy}" r="7"/><circle class="hubdot" cx="${cx}" cy="${cy}" r="2.2"/>
+  <circle class="needledot" cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="3.2"/></svg>`;
+}
+function updateRotorList(mi){
+ const list=document.getElementById('rotor-list');if(!list)return;
+ const rolls=MY_ROLLS.filter(r=>r.mi===mi);
+ list.innerHTML=rolls.length?rolls.map(r=>`<div class="tl-card" onclick="openRoll(${r.id})">
+   <img src="${r.img}" alt=""><div class="tl-body"><h5>${r.title}</h5>
+   <div class="tl-meta">Roll #${String(r.id).padStart(3,'0')} · ${FILMS[r.film].name}</div></div></div>`).join('')
+  :`<div class="rotor-empty">No rolls this month.<br>Shoot the next one.</div>`;
+}
+function renderRotor(pos){
+ const c=document.getElementById('rotor-svg');if(c)c.innerHTML=buildRotorSvg(pos);
+ const mi=Math.round(pos);
+ const m=document.getElementById('rotor-month');
+ if(m&&m.textContent!==MONTHS[mi]+' 2026')m.textContent=MONTHS[mi]+' 2026';
+ if(mi!==state.rotorMi){state.rotorMi=mi;updateRotorList(mi);}
+}
+let rotorRAF=null;
+function animateRotor(from,to){
+ if(rotorRAF)cancelAnimationFrame(rotorRAF);
+ const dur=340,t0=performance.now();
+ const step=(t)=>{
+  const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);
+  const pos=from+(to-from)*e;state.rotorPos=pos;renderRotor(pos);
+  if(k<1)rotorRAF=requestAnimationFrame(step);
+  else{state.rotorPos=to;state.rotorMi=to;renderRotor(to);}
+ };
+ rotorRAF=requestAnimationFrame(step);
+}
+function initRotor(){
+ const init=state.rotorMi==null?9:state.rotorMi;
+ state.rotorPos=init;state.rotorMi=init;
+ renderRotor(init);
+ updateRotorList(init);
+ const c=document.getElementById('rotor-svg');if(!c)return;
+ let dragging=false,lastTick=init;
+ const posFromEvent=(e)=>{
+  const r=c.getBoundingClientRect();
+  const cx=r.left+r.width/2,cy=r.top+(160/180)*r.height;
+  const p=(e.touches&&e.touches[0])||e;
+  let ang=Math.atan2(-(p.clientY-cy),p.clientX-cx)*180/Math.PI;
+  ang=Math.max(0,Math.min(180,ang));
+  return Math.max(0,Math.min(11,(180-ang)/(180/11)));
+ };
+ const onMove=(e)=>{if(!dragging)return;
+  if(rotorRAF){cancelAnimationFrame(rotorRAF);rotorRAF=null;}
+  const pos=posFromEvent(e);state.rotorPos=pos;renderRotor(pos);
+  const mi=Math.round(pos);
+  if(mi!==lastTick){lastTick=mi;tickSound();}
+ };
+ const onUp=()=>{if(!dragging)return;dragging=false;
+  animateRotor(state.rotorPos,Math.round(state.rotorPos));};
+ c.addEventListener('pointerdown',(e)=>{dragging=true;ensureAudio();try{c.setPointerCapture(e.pointerId);}catch(_){}onMove(e);});
+ window.addEventListener('pointermove',onMove);
+ window.addEventListener('pointerup',onUp);
+ window.addEventListener('pointercancel',onUp);
+}
+function renderMe(){
+ const el=document.getElementById('screen-me');
+ if(!state.user){
+  el.innerHTML=`<div style="padding:30px 20px">
+   <div class="eyebrow">Your account</div>
+   <h2 style="font-family:var(--serif);font-size:34px;font-weight:500;margin:10px 0 10px">Sign in to <em>keep your rolls.</em></h2>
+   <div class="p-form" style="padding:0">
+    <div class="field"><label>Email</label><input type="email" id="me-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="me-password" placeholder="Password" onkeydown="if(event.key==='Enter')signInMe()"></div>
+    <button class="btn btn-block" onclick="signInMe()">Sign in</button>
+    <button class="link btn-block" style="margin-top:12px" onclick="continueGuestMe()">Continue as guest</button>
+   </div>
+   <div style="margin-top:24px"><button class="link" onclick="go('home')">← Look around first</button></div>
+  </div>`;
+  return;
+ }
+ const u=state.user;
+ el.innerHTML=`<div class="p-top">
+   <div class="p-avatar"><img src="${u.avatar}" alt=""></div>
+   <div class="p-id">
+    <h2>${u.name}</h2>
+    <div class="p-handle">${u.handle||'@'+u.name.toLowerCase().replace(/\s/g,'')}</div>
+    <div class="p-stats">
+     <span><b>${MY_ROLLS.length}</b> rolls</span>
+     <span><b>128</b> frames</span>
+     <span><b>23</b> saved</span>
+    </div>
+   </div>
+  </div>
+  <div class="p-actions">
+   <button class="btn ghost" onclick="editProfile()">Edit profile</button>
+   <button class="btn quiet" onclick="toast('Profile link copied.')">Share</button>
+  </div>
+
+  ${state.member?'<div class="mem-banner" style="margin-top:18px"><div class="mb-tag">FILM+ active</div><h4>Member prices on.</h4><p>Negatives stored with FILM for up to a year — no repeated return postage.</p><button class="btn light" onclick="manageMember()">Manage membership</button></div>'
+  :'<div class="mem-banner" style="margin-top:18px"><div class="mb-tag">FILM+</div><h4>Develop less, keep more.</h4><p>Member prices and a year of negative storage.</p><button class="btn light" onclick="openMembership()">Upgrade</button></div>'}
+
+  <div class="section" style="padding-top:26px">
+   <div class="sec-head"><h3>My film journey</h3><span class="see">drag the dial</span></div>
+  </div>
+  <div class="rotor-card">
+   <div id="rotor-svg"></div>
+   <div class="rotor-readout"><div class="rr-month" id="rotor-month"></div>
+    <div class="rr-sub">2026 · turn to a month</div></div>
+  </div>
+  <div class="rotor-list" id="rotor-list"></div>
+
+  <div class="section" style="padding-top:24px">
+   <div class="sec-head"><h3>Settings</h3></div>
+  </div>
+  <div class="p-list">
+   <button onclick="editProfile()"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.5 3.1-5.5 7-5.5s7 2 7 5.5"/></svg></span>Profile &amp; personal info<span>›</span></button>
+   <button onclick="openMembership()"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></span>Membership &amp; billing<span>›</span></button>
+   <button onclick="openPrefs()"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 2h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 22h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"/></svg></span>Notifications &amp; privacy<span>›</span></button>
+   <button onclick="switchAccountMe()"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 17l5-5-5-5M21 12H9M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/></svg></span>Switch account<span>›</span></button>
+   <button onclick="signOutMe()"><span class="pli-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></span>Sign out<span>›</span></button>
+  </div>`;
+  initRotor();
+}
+function signInMe(){
+ const el=document.getElementById('me-email');
+ const email=(el&&el.value||'').trim();
+ let name=email.split('@')[0]||'Maya';
+ name=name.charAt(0).toUpperCase()+name.slice(1);
+ const u=Object.assign({},DEMO_USER,{name,email:email||DEMO_USER.email,
+  handle:'@'+name.toLowerCase().replace(/\s/g,''),avatar:DEMO_USER.avatar});
+ state.user=u;updateHeaderAvatar();renderMe();
+ toast('Welcome, '+name+'.');
+}
+function continueGuestMe(){state.user=Object.assign({},DEMO_USER);updateHeaderAvatar();renderMe();toast('Browsing as guest.');}
+function signOutMe(){state.user=null;state.member=false;renderMe();updateHeaderAvatar();toast('Signed out.');}
+function switchAccountMe(){state.user=null;state.member=false;renderMe();updateHeaderAvatar();toast('Sign in to another account.');}
+function updateHeaderAvatar(){
+ const img=document.querySelector('.h-avatar img');
+ if(!img)return;
+ img.src=state.user?state.user.avatar:'https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BYlDb2Ptpooc1AxTS8QckDienSd';
+}
+function editProfile(){
+ const u=state.user;
+ pushOv(`<div class="p-form" style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="backOv()">← Back</button>
+  <div class="eyebrow">Edit profile</div>
+  <h2 style="font-family:var(--serif);font-size:30px;font-weight:500;margin:10px 0 18px">Personal info</h2>
+  <div class="field"><label>Display name</label><input id="ep-name" value="${u.name}"></div>
+  <div class="field"><label>Handle</label><input id="ep-handle" value="${u.handle}"></div>
+  <div class="field"><label>Email</label><input id="ep-email" value="${u.email||''}"></div>
+  <div class="field"><label>Bio</label><textarea id="ep-bio">${u.bio||''}</textarea></div>
+  <button class="btn btn-block" onclick="saveProfile()">Save changes</button>
+ </div>`,'me');
+}
+function saveProfile(){
+ const name=document.getElementById('ep-name').value.trim();
+ if(!name){toast('Name cannot be empty.');return;}
+ Object.assign(state.user,{name,
+  handle:document.getElementById('ep-handle').value.trim(),
+  email:document.getElementById('ep-email').value.trim(),
+  bio:document.getElementById('ep-bio').value});
+ backOv();updateHeaderAvatar();
+ toast('Profile saved.');
+}
+function openPrefs(){
+ pushOv(`<div style="padding:22px 20px 40px">
+  <button class="ov-back" onclick="backOv()">← Back</button>
+  <div class="eyebrow">Notifications &amp; privacy</div>
+  <h2 style="font-family:var(--serif);font-size:30px;font-weight:500;margin:10px 0 14px">Preferences</h2>
+  <label class="toggle-row"><input type="checkbox" checked> Email me about comments on my rolls</label>
+  <label class="toggle-row"><input type="checkbox"> Keep my profile private</label>
+  <label class="toggle-row"><input type="checkbox" checked> Store my negatives after developing</label>
+  <div style="margin-top:18px"><button class="btn btn-block" onclick="backOv();toast('Preferences saved.')">Save</button></div>
+ </div>`,'me');
+}
+
+/* ============ Init ============ */
+renderHome();
+
+</script>
+</body>
+</html>
